@@ -1,0 +1,12 @@
+:root {
+  --bs-body-font-size: 15px;
+  --tw-space-x-reverse: 0;
+  --tw-space-y-reverse: 0;
+  --border-color: #404040;
+}
+
+@media (max-width: 500px) {
+  :root {
+    --bs-body-font-size: 14px;
+  }
+}

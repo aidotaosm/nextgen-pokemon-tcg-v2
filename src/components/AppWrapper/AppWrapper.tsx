@@ -1,4 +1,5 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { BasicProps } from "../../models/GenericModels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,6 +42,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
     updateDarkMode,
   } = useContext(AppContext);
   let router = useRouter();
+  let pathname = usePathname();
+  const searchParams = useSearchParams();
   const [pathToRedirect, setPathToRedirect] = useState<string>("");
   const [listOfPaths, setListOfPaths] = useState<string[]>([]);
   const [scrollTop, setScrollTop] = useState(0);
@@ -66,7 +69,9 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
         backButtonTooltipId
       ) as any;
       if (backButtonTrigger) {
-        backTooltipInstance = new bootStrapMasterClass.Tooltip(backButtonTrigger);
+        backTooltipInstance = new bootStrapMasterClass.Tooltip(
+          backButtonTrigger
+        );
       }
       const offlineButtonTrigger = document.getElementById(
         offlineButtonTooltipId
@@ -92,9 +97,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
           globalSearchButtonTrigger
         );
       }
-      const githubTrigger = document.getElementById(
-        githubTooltipId
-      ) as any;
+      const githubTrigger = document.getElementById(githubTooltipId) as any;
       if (githubTrigger) {
         githubTooltipInstance = new bootStrapMasterClass.Tooltip(githubTrigger);
       }
@@ -105,15 +108,15 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       darkModeTooltipInstance?.dispose();
       globalSearchTooltipInstance?.dispose();
       githubTooltipInstance?.dispose();
-    }
-  }, [appState?.bootstrap, router.pathname]);
+    };
+  }, [appState?.bootstrap, pathname]);
 
   useEffect(() => {
-    if (router.isReady) {
-      if (router.asPath.includes("/series") || router.pathname === "/") {
-        setListOfPaths((l) => [...l, router.asPath]);
+    if (pathname) {
+      if (pathname.includes("/series") || pathname === "/") {
+        setListOfPaths((l) => [...l, pathname || ""]);
       }
-      let splitPath = router.pathname.split("/")[1];
+      let splitPath = pathname.split("/")[1];
       if (!splitPath) {
         setPathToRedirect("");
       } else if (splitPath === "series") {
@@ -124,8 +127,9 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
         splitPath === "search"
       ) {
         if (
-          listOfPaths.length &&
-          listOfPaths[listOfPaths.length - 1] != router.asPath
+          (listOfPaths.length &&
+            listOfPaths[listOfPaths.length - 1] != pathname) ||
+          ""
         ) {
           setPathToRedirect(listOfPaths[listOfPaths.length - 1]);
         } else {
@@ -133,7 +137,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
         }
       }
     }
-  }, [router.asPath]);
+  }, [pathname]);
   useEffect(() => {
     const handleStart = () => {
       setIsNavigationAnimating(true);
@@ -141,17 +145,11 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
     const handleStop = () => {
       setIsNavigationAnimating(false);
     };
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleStop);
-    router.events.on("routeChangeError", handleStop);
-
+    handleStart();
     return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleStop);
-      router.events.off("routeChangeError", handleStop);
+      handleStop();
     };
-  }, [router.events]);
+  }, [pathname, searchParams]);
   const showToast = (bootstrap: any) => {
     const toastLiveExample = document.getElementById(swLoaderToastId);
     if (toastLiveExample && bootstrap) {
@@ -163,22 +161,22 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       Helper.getLocalStorageItem("appState");
     let darkModeValue =
       localAppState?.hasOwnProperty("darkMode") &&
-        typeof localAppState.darkMode === "boolean"
+      typeof localAppState.darkMode === "boolean"
         ? localAppState.darkMode
         : true;
     let gridViewValue =
       localAppState?.hasOwnProperty("gridView") &&
-        typeof localAppState.gridView === "boolean"
+      typeof localAppState.gridView === "boolean"
         ? localAppState.gridView
         : false;
     let sidebarCollapsedValue =
       localAppState?.hasOwnProperty("sidebarCollapsed") &&
-        typeof localAppState.sidebarCollapsed === "boolean"
+      typeof localAppState.sidebarCollapsed === "boolean"
         ? localAppState.sidebarCollapsed
         : false;
     let offLineModeValue =
       localAppState?.hasOwnProperty("offLineMode") &&
-        typeof localAppState.offLineMode === "boolean"
+      typeof localAppState.offLineMode === "boolean"
         ? localAppState.offLineMode
         : false;
     multiUpdate?.({
@@ -254,11 +252,13 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       }
       style={{ minHeight: "100vh" }}
     >
-      <ProgressComponent isAnimating={isNavigationAnimating}></ProgressComponent>
+      <ProgressComponent
+        isAnimating={isNavigationAnimating}
+      ></ProgressComponent>
       <header className="container pt-3 pb-4">
         <div className={"d-flex align-items-center row"}>
           <div className="col d-flex align-items-center">
-            <IF condition={pathToRedirect || router.pathname != "/"}>
+            <IF condition={pathToRedirect || pathname != "/"}>
               <span
                 data-bs-title={"Go back to last page."}
                 data-bs-toggle="tooltip"
@@ -274,8 +274,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
                       navigator.onLine
                         ? pathToRedirect || "/"
                         : pathToRedirect
-                          ? pathToRedirect.split("?")[0]
-                          : "/"
+                        ? pathToRedirect.split("?")[0]
+                        : "/"
                     );
                   }}
                 />
@@ -283,8 +283,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
             </IF>
             <IF
               condition={
-                // router.pathname != "/" &&router.pathname != "/series" &&
-                router.pathname != "/search"
+                // pathname != "/" &&pathname != "/series" &&
+                pathname != "/search"
               }
             >
               <Link href="/search" aria-label={"Search page"}>
@@ -331,8 +331,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
               <IF
                 condition={
                   !appState.offLineMode &&
-                  router.pathname != "/" &&
-                  router.pathname != "/series"
+                  pathname != "/" &&
+                  pathname != "/series"
                 }
               >
                 <FontAwesomeIcon
@@ -344,8 +344,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
               <IF
                 condition={
                   appState.offLineMode &&
-                  router.pathname != "/" &&
-                  router.pathname != "/series"
+                  pathname != "/" &&
+                  pathname != "/series"
                 }
               >
                 <FontAwesomeIcon
@@ -384,12 +384,19 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
           <small className="d-flex flex-column">
             <span>
               The Next Generation Pokemon TCG database. By{" "}
-              <Link href="https://github.com/aidotaosm" target="_blank" data-bs-title={"Click to visit this project in Github! And maybe give it a Start?"}
+              <Link
+                href="https://github.com/aidotaosm"
+                target="_blank"
+                data-bs-title={
+                  "Click to visit this project in Github! And maybe give it a Start?"
+                }
                 data-bs-toggle="tooltip"
                 data-bs-trigger="hover"
-                id={githubTooltipId}>
+                id={githubTooltipId}
+              >
                 Osama
-              </Link>.
+              </Link>
+              .
             </span>
             <span className="mt-1">
               This website is not produced, endorsed, supported, or affiliated
@@ -440,8 +447,8 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
           {serviceWorkerStatus === "loading"
             ? "This feature allows you to use offline features and enhances the user experience. Give us a moment while it does it's thing!"
             : serviceWorkerStatus === "done"
-              ? "Service worker is successfully running. You can now enjoy an enhanced experience and benefit from supported offline features."
-              : "Service worker couldn't be installed. You can continue to use the site normally. But offline features have been turned off. You may try refreshing the page or using a different (newer) browser."}
+            ? "Service worker is successfully running. You can now enjoy an enhanced experience and benefit from supported offline features."
+            : "Service worker couldn't be installed. You can continue to use the site normally. But offline features have been turned off. You may try refreshing the page or using a different (newer) browser."}
         </div>
       </ToastComponent>
     </div>

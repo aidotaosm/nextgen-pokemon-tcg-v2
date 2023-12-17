@@ -1,7 +1,8 @@
 import { FormInstance } from "antd";
+import { ReactNode } from "react";
 
 export class BasicProps {
-  children?: JSX.Element;
+  children?: ReactNode;
   qry?: any;
 }
 export class CardsObjectProps {

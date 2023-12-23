@@ -61,7 +61,7 @@ export const ImageComponent: FunctionComponent<any> = ({
               setImageSource("/images/Cardback.webp");
             }
           }}
-          onLoadingComplete={(e: any) => {
+          onLoad={(e: any) => {
             if (fallBackType === "logo" || fallBackType === "symbol") {
               // console.log(
               //   e.naturalHeight / e.naturalWidth,
@@ -106,7 +106,7 @@ export const ImageComponent: FunctionComponent<any> = ({
                 setHighQualityImageSource("/images/Cardback.webp");
               }
             }}
-            onLoadingComplete={(e: any) => {
+            onLoad={(e: any) => {
               // console.log(
               //   e.naturalHeight / e.naturalWidth,
               //   DEFAULT_CARD_BACK_RATIO,

@@ -15,7 +15,7 @@ import {
   faSearch,
   faAnglesUp,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { IF } from "../UtilityComponents/IF";
 import { AppContext } from "../../contexts/AppContext";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
@@ -24,7 +24,6 @@ import { Helper } from "../../utils/helper";
 import Link from "next/link";
 import { ToastComponent } from "../UtilityComponents/ToastComponent";
 import { Tooltip } from "bootstrap";
-import ProgressComponent from "../LoaderComponent/ProgressComponent";
 //declare let self: ServiceWorkerGlobalScope;
 
 interface LocalAppInterface {
@@ -252,9 +251,15 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       }
       style={{ minHeight: "100vh" }}
     >
-      <ProgressComponent
+      {/* <ProgressComponent
         isAnimating={isNavigationAnimating}
-      ></ProgressComponent>
+      ></ProgressComponent> */}
+      <ProgressBar
+        height="4px"
+        color="#fffd00"
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
       <header className="container pt-3 pb-4">
         <div className={"d-flex align-items-center row"}>
           <div className="col d-flex align-items-center">

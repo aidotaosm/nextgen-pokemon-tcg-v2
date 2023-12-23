@@ -23,7 +23,6 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
   totalNumberOfSets,
   arrayOfSeries,
 }: any) => {
-  // console.log(totalNumberOfSets,arrayOfSeries);
   let router = useRouter();
   const queryParams = useParams();
   const { updateGlobalSearchTerm } = useContext(AppContext);
@@ -198,10 +197,10 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
                                   width={192}
                                   blurDataURL={logoBlurImage}
                                   className="w-100 h-100"
-                                  // fallBackType="logo"
-                                  // fallbackImage={
-                                  //   "/images/International_Pokémon_logo.png"
-                                  // }
+                                  fallBackType="logo"
+                                  fallbackImage={
+                                    "/images/International_Pokémon_logo.png"
+                                  }
                                 />
                               </div>
                               <div className={styles["set-name"]}>
@@ -213,8 +212,8 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
                                   width={25}
                                   blurDataURL={logoBlurImage}
                                   className="disable-save set-symbol-in-expansions"
-                                  // fallBackType="symbol"
-                                  // fallbackImage={"/images/free-energy.png"}
+                                  fallBackType="symbol"
+                                  fallbackImage={"/images/free-energy.png"}
                                 />
                               </div>
                             </>

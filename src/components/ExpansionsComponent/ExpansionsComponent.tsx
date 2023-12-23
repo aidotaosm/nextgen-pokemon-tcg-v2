@@ -1,3 +1,4 @@
+"use client";
 import {
   Fragment,
   FunctionComponent,
@@ -8,7 +9,7 @@ import {
 import { SeriesArrayProps } from "../../models/GenericModels";
 import styles from "./ExpansionsComponent.module.css";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { logoBlurImage } from "@/base64Images/base64Images";
 import { AppContext } from "../../contexts/AppContext";
@@ -22,56 +23,54 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
   totalNumberOfSets,
   arrayOfSeries,
 }: any) => {
+  // console.log(totalNumberOfSets,arrayOfSeries);
   let router = useRouter();
+  const queryParams = useParams();
   const { updateGlobalSearchTerm } = useContext(AppContext);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    if (router.isReady) {
-      // let arrayOfSets:any[] = [];
-      // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
-      // const xmlText = Helper.generateSiteMap(arrayOfSets, Vercel_DEFAULT_URL + 'set/');
-      // console.log(arrayOfSets);
-      // Helper.saveTemplateAsFile(
-      //   "sitemap.xml",
-      //   xmlText,
-      //   false,
-      //   "text/plain"
-      // );
-      let selectedSeriesId = router.query["opened-series"]?.toString();
-      let parentOfAccordionToOpen = document.getElementById(
-        selectedSeriesId || ""
-      );
-      if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {
-        const latestSetAccordion = document.getElementById(setsBySeries[0].id)
-          ?.children[0].children[0] as HTMLElement;
-        latestSetAccordion?.click();
-        const accordionToOpen = parentOfAccordionToOpen.children[0]
-          .children[0] as HTMLElement;
-        accordionToOpen?.click();
-        setTimeout(() => {
-          parentOfAccordionToOpen?.scrollIntoView({
-            behavior: "smooth",
-            inline: "start",
-            block: "start",
-          });
-        }, 500);
-        setsBySeries.forEach((series) => {
-          if (series.id === selectedSeriesId) {
-            series.isOpen = true;
-          } else {
-            series.isOpen = false;
-          }
+    // let arrayOfSets:any[] = [];
+    // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
+    // const xmlText = Helper.generateSiteMap(arrayOfSets, Vercel_DEFAULT_URL + 'set/');
+    // console.log(arrayOfSets);
+    // Helper.saveTemplateAsFile(
+    //   "sitemap.xml",
+    //   xmlText,
+    //   false,
+    //   "text/plain"
+    // );
+    let selectedSeriesId = queryParams?.["opened-series"]?.toString();
+    let parentOfAccordionToOpen = document.getElementById(
+      selectedSeriesId || ""
+    );
+    if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {
+      const latestSetAccordion = document.getElementById(setsBySeries[0].id)
+        ?.children[0].children[0] as HTMLElement;
+      latestSetAccordion?.click();
+      const accordionToOpen = parentOfAccordionToOpen.children[0]
+        .children[0] as HTMLElement;
+      accordionToOpen?.click();
+      setTimeout(() => {
+        parentOfAccordionToOpen?.scrollIntoView({
+          behavior: "smooth",
+          inline: "start",
+          block: "start",
         });
-        setSetsBySeries([...setsBySeries]);
-      } else {
-        router.push("/series?opened-series=" + setsBySeries[0]?.id, undefined, {
-          shallow: true,
-        });
-      }
+      }, 500);
+      setsBySeries.forEach((series) => {
+        if (series.id === selectedSeriesId) {
+          series.isOpen = true;
+        } else {
+          series.isOpen = false;
+        }
+      });
+      setSetsBySeries([...setsBySeries]);
+    } else {
+      router.push("/series?opened-series=" + setsBySeries[0]?.id);
     }
-  }, [router.isReady]);
+  }, [queryParams]);
 
   const toggleAccordion = (seriesId: any) => {
     let allowScroll = false;
@@ -98,13 +97,9 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
           block: "start",
         });
       }, 500);
-      router.push("/series?opened-series=" + seriesId, undefined, {
-        shallow: true,
-      });
+      router.push("/series?opened-series=" + seriesId);
     } else {
-      router.push("/series", undefined, {
-        shallow: true,
-      });
+      router.push("/series");
     }
     setSetsBySeries([...setsBySeries]);
   };
@@ -203,10 +198,10 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
                                   width={192}
                                   blurDataURL={logoBlurImage}
                                   className="w-100 h-100"
-                                  fallBackType="logo"
-                                  fallbackImage={
-                                    "/images/International_Pokémon_logo.png"
-                                  }
+                                  // fallBackType="logo"
+                                  // fallbackImage={
+                                  //   "/images/International_Pokémon_logo.png"
+                                  // }
                                 />
                               </div>
                               <div className={styles["set-name"]}>
@@ -218,8 +213,8 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
                                   width={25}
                                   blurDataURL={logoBlurImage}
                                   className="disable-save set-symbol-in-expansions"
-                                  fallBackType="symbol"
-                                  fallbackImage={"/images/free-energy.png"}
+                                  // fallBackType="symbol"
+                                  // fallbackImage={"/images/free-energy.png"}
                                 />
                               </div>
                             </>

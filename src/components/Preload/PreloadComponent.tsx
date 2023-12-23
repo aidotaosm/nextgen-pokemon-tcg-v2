@@ -1,3 +1,4 @@
+"use client";
 import {
   faArrowsSpin,
   faCheck,
@@ -9,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "bootstrap";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Fragment,
   FunctionComponent,
@@ -58,7 +59,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   const clearCacheUnregisterSWARefreshTooltipId =
     "clearCacheUnregisterSWARefreshTooltipId";
   const settingsTooltipId = "settingsTooltipId";
-  let router = useRouter();
+  const router = useRouter();
+  const pathName = usePathname();
   useEffect(() => {
     let tooltipTriggerInstance: Tooltip,
       cacheTooltipInstance: Tooltip,
@@ -89,7 +91,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       cacheTooltipInstance?.dispose();
       settingsTooltipInstance?.dispose();
     };
-  }, [appState?.bootstrap, router.pathname]);
+  }, [appState?.bootstrap, pathName]);
   useEffect(() => {
     const onToastShowHandler = async () => {
       triggerSearchPagePrefetch();
@@ -106,14 +108,16 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   }, []);
   const triggerSearchPagePrefetch = async () => {
     setSearchPageDownloaded("loading");
-    router
-      .prefetch("/search")
-      .then((prefetchedData) => {
-        setSearchPageDownloaded("yes");
-      })
-      .catch((e) => {
-        setSearchPageDownloaded("no");
-      });
+    // router
+    //   .prefetch("/search")
+    //   .then((prefetchedData) => {
+    //     setSearchPageDownloaded("yes");
+    //   })
+    //   .catch((e) => {
+    //     setSearchPageDownloaded("no");
+    //   });
+    router.prefetch("/series");
+    setSearchPageDownloaded("yes");
   };
   const triggerPrefetch = async () => {
     let localShouldCancel = false;
@@ -174,7 +178,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
             callUrl:
               "/set/" +
               (setsBySeries[seriesIndex].sets[setIndex].id ==
-                SpecialSetNames.pop2
+              SpecialSetNames.pop2
                 ? SpecialSetNames.poptwo
                 : setsBySeries[seriesIndex].sets[setIndex].id),
           });
@@ -199,7 +203,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
             callUrl:
               "/set/" +
               (setsBySeries[seriesIndex].sets[setIndex].id ==
-                SpecialSetNames.pop2
+              SpecialSetNames.pop2
                 ? SpecialSetNames.poptwo
                 : setsBySeries[seriesIndex].sets[setIndex].id),
           });
@@ -231,28 +235,43 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     setDownloadAllCardsLoading(true);
     getAllCards()
       .then((cardsParentObject: any[]) => {
-
         //sort all cards to national dex numbers
         cardsParentObject.sort(
-          (firstColumn, secondColumn) => (firstColumn.nationalPokedexNumbers?.[0] || (cardsParentObject.length - 1)) - (secondColumn.nationalPokedexNumbers?.[0] || (cardsParentObject.length - 1))
+          (firstColumn, secondColumn) =>
+            (firstColumn.nationalPokedexNumbers?.[0] ||
+              cardsParentObject.length - 1) -
+            (secondColumn.nationalPokedexNumbers?.[0] ||
+              cardsParentObject.length - 1)
         );
         Helper.saveTemplateAsFile("AllCards.json", cardsParentObject);
 
         // sort by name
-        cardsParentObject.sort(
-          (firstColumn, secondColumn) => firstColumn.name.localeCompare(secondColumn.name)
+        cardsParentObject.sort((firstColumn, secondColumn) =>
+          firstColumn.name.localeCompare(secondColumn.name)
         );
-        let listOfCardsWithUniqueNames = Array.from(new Set(cardsParentObject.map((card: any) => card.name)));
-        Helper.saveTemplateAsFile("AllCardsWithUniqueNames.json", listOfCardsWithUniqueNames);
+        let listOfCardsWithUniqueNames = Array.from(
+          new Set(cardsParentObject.map((card: any) => card.name))
+        );
+        Helper.saveTemplateAsFile(
+          "AllCardsWithUniqueNames.json",
+          listOfCardsWithUniqueNames
+        );
 
         //reverse sort all cards with release date
-        cardsParentObject.sort(
-          (firstColumn, secondColumn) => (new Date(firstColumn.set.releaseDate) > new Date(secondColumn.set.releaseDate)) ? 1 : ((new Date(firstColumn.set.releaseDate) === new Date(secondColumn.set.releaseDate)) ? 0 : -1)
+        cardsParentObject.sort((firstColumn, secondColumn) =>
+          new Date(firstColumn.set.releaseDate) >
+          new Date(secondColumn.set.releaseDate)
+            ? 1
+            : new Date(firstColumn.set.releaseDate) ===
+              new Date(secondColumn.set.releaseDate)
+            ? 0
+            : -1
         );
         cardsParentObject.reverse();
-        let listOfUniqueSets = Array.from(new Map(cardsParentObject.map(item => [item.set.id, item.set.name])));
+        let listOfUniqueSets = Array.from(
+          new Map(cardsParentObject.map((item) => [item.set.id, item.set.name]))
+        );
         Helper.saveTemplateAsFile("AllSetNames.json", listOfUniqueSets);
-
       })
       .finally(() => {
         setDownloadAllCardsLoading(false);

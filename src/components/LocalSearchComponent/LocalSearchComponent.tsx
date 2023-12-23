@@ -1,3 +1,4 @@
+'use client'
 import { AutoComplete, ConfigProvider, Input, theme } from "antd";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { random_pokemon_names } from "../../constants/constants";

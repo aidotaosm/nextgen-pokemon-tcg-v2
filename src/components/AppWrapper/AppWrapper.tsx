@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { BasicProps } from "../../models/GenericModels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,13 +42,11 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
   } = useContext(AppContext);
   let router = useRouter();
   let pathname = usePathname();
-  const searchParams = useSearchParams();
   const [pathToRedirect, setPathToRedirect] = useState<string>("");
   const [listOfPaths, setListOfPaths] = useState<string[]>([]);
   const [scrollTop, setScrollTop] = useState(0);
   const [serviceWorkerStatus, setServiceWorkerStatus] =
     useState<string>("loading");
-  const [isNavigationAnimating, setIsNavigationAnimating] = useState(false);
   const swLoaderToastId = "swLoaderToast";
   const backButtonTooltipId = "backButtonTooltipId";
   const darkModeButtonTooltipId = "darkModeButtonTooltipId";
@@ -137,18 +135,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       }
     }
   }, [pathname]);
-  useEffect(() => {
-    const handleStart = () => {
-      setIsNavigationAnimating(true);
-    };
-    const handleStop = () => {
-      setIsNavigationAnimating(false);
-    };
-    handleStart();
-    return () => {
-      handleStop();
-    };
-  }, [pathname, searchParams]);
+
   const showToast = (bootstrap: any) => {
     const toastLiveExample = document.getElementById(swLoaderToastId);
     if (toastLiveExample && bootstrap) {

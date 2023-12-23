@@ -8,6 +8,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   runtimeCaching: [...customRuntimeCaching],
   fallbacks: {
     image: "/images/Cardback.webp",
+    fallbacks:'/offline'
   },
   maximumFileSizeToCacheInBytes: 50000000,
   reloadOnOnline: false,

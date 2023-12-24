@@ -67,7 +67,8 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
       });
       setSetsBySeries([...setsBySeries]);
     } else {
-      router.push("/series?opened-series=" + setsBySeries[0]?.id);
+      window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
+     // router.replace("/series?opened-series=" + setsBySeries[0]?.id);
     }
   }, [queryParams]);
 
@@ -96,9 +97,11 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
           block: "start",
         });
       }, 500);
-      router.push("/series?opened-series=" + seriesId);
+      window.history.pushState({}, '', "/series?opened-series=" + seriesId)
+      // router.replace("/series?opened-series=" + seriesId);
     } else {
-      router.push("/series");
+      window.history.pushState({}, '', "/series")
+      //router.replace("/series");
     }
     setSetsBySeries([...setsBySeries]);
   };

@@ -22,7 +22,6 @@ export class Helper {
     } else {
       pokemonSDKVariable = pokemon.default;
     }
-    console.log(typeof window, "ASD");
     pokemonSDKVariable.configure({ apiKey: DEV_POKEMONTCG_IO_API_KEY });
     return pokemonSDKVariable;
   };

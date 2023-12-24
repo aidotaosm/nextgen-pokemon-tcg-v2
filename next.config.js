@@ -39,6 +39,9 @@ module.exports = withPWA({
     removeConsole:
       process.env.APP_ENV !== "local" && process.env.NODE_ENV !== "development",
   },
+  experimental: {
+    windowHistorySupport: true,
+  },
   //  transpilePackages: ['antd']
   // target: 'serverless'
 });

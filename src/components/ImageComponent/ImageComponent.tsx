@@ -61,14 +61,17 @@ export const ImageComponent: FunctionComponent<any> = ({
               setImageSource("/images/Cardback.webp");
             }
           }}
-          onLoadingComplete={(e: any) => {
+          onLoad={(e) => {
             if (fallBackType === "logo" || fallBackType === "symbol") {
               // console.log(
-              //   e.naturalHeight / e.naturalWidth,
+              //   e.currentTarget.naturalHeight / e.currentTarget.naturalWidth,
               //   DEFAULT_CARD_BACK_RATIO,
               //   "lq"
               // );
-              if (e.naturalHeight / e.naturalWidth == DEFAULT_CARD_BACK_RATIO) {
+              if (
+                e.currentTarget.naturalHeight / e.currentTarget.naturalWidth ==
+                DEFAULT_CARD_BACK_RATIO
+              ) {
                 // console.log("default logo gotten in low quality view");
                 setImageSource(fallbackImage);
                 if (fallBackType === "symbol") {
@@ -78,8 +81,8 @@ export const ImageComponent: FunctionComponent<any> = ({
             }
             if (!shouldFill) {
               setImageDimensions({
-                width: e.naturalWidth,
-                height: e.naturalHeight,
+                width: e.currentTarget.naturalWidth,
+                height: e.currentTarget.naturalHeight,
               });
             }
             setLowQualityImageLoaded(true);
@@ -106,14 +109,16 @@ export const ImageComponent: FunctionComponent<any> = ({
                 setHighQualityImageSource("/images/Cardback.webp");
               }
             }}
-            onLoadingComplete={(e: any) => {
-              console.log(e);
+            onLoad={(e) => {
               // console.log(
-              //   e.naturalHeight / e.naturalWidth,
+              //   e.currentTarget.naturalHeight / e.currentTarget.naturalWidth,
               //   DEFAULT_CARD_BACK_RATIO,
               //   "hq"
               // );
-              if (e.naturalHeight / e.naturalWidth == DEFAULT_CARD_BACK_RATIO) {
+              if (
+                e.currentTarget.naturalHeight / e.currentTarget.naturalWidth ==
+                DEFAULT_CARD_BACK_RATIO
+              ) {
                 // console.log(
                 //   "low quality image rendered in hires since high quality image cannot be loaded"
                 //    );
@@ -122,8 +127,8 @@ export const ImageComponent: FunctionComponent<any> = ({
               }
 
               setImageDimensions({
-                width: e.naturalWidth,
-                height: e.naturalHeight,
+                width: e.currentTarget.naturalWidth,
+                height: e.currentTarget.naturalHeight,
               });
               setHighQualityImageLoaded(true);
             }}

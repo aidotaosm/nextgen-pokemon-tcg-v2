@@ -1,11 +1,10 @@
 import { ExpansionsComponent } from "@/components/ExpansionsComponent/ExpansionsComponent";
 import { seriesMetaData } from "@/data/series-metadata";
-import { SeriesArrayProps } from "@/models/GenericModels";
 import { getExpansions } from "@/utils/networkCalls";
 import { Metadata } from "next";
-import { Fragment, FunctionComponent } from "react";
-
-async function getArrayOfSeries() {
+import { Fragment, FunctionComponent, cache } from "react";
+export const revalidate = 60 * 60;
+const getArrayOfSeries = cache(async () => {
   let { arrayOfSeries, sets } = await getExpansions();
   let totalNumberOfSets = 0;
   if (arrayOfSeries && arrayOfSeries[0]) {
@@ -19,9 +18,9 @@ async function getArrayOfSeries() {
       .map((series) => (totalNumberOfSets = series.sets.length))
       .reduce((partialSum, a) => partialSum + a, 0);
   }
-
+  console.log('getArrayOfSeries');
   return { arrayOfSeries, totalNumberOfSets };
-}
+});
 
 export const metadata: Metadata = seriesMetaData;
 const Series: FunctionComponent = async () => {

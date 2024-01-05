@@ -9,7 +9,7 @@ import {
 import { SeriesArrayProps } from "../../models/GenericModels";
 import styles from "./ExpansionsComponent.module.css";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { logoBlurImage } from "@/base64Images/base64Images";
 import { AppContext } from "../../contexts/AppContext";
@@ -24,11 +24,10 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
   arrayOfSeries,
 }: any) => {
   let router = useRouter();
-  const queryParams = useParams();
+  const queryParams = useSearchParams();
   const { updateGlobalSearchTerm } = useContext(AppContext);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [searchValue, setSearchValue] = useState("");
-
   useEffect(() => {
     // let arrayOfSets:any[] = [];
     // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
@@ -40,7 +39,7 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
     //   false,
     //   "text/plain"
     // );
-    let selectedSeriesId = queryParams?.["opened-series"]?.toString();
+    let selectedSeriesId = queryParams?.get("opened-series");
     let parentOfAccordionToOpen = document.getElementById(
       selectedSeriesId || ""
     );
@@ -66,11 +65,13 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
         }
       });
       setSetsBySeries([...setsBySeries]);
+      console.log(setsBySeries);
     } else {
-      window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
-     // router.replace("/series?opened-series=" + setsBySeries[0]?.id);
+      //window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
+      router.replace("/series?opened-series=" + setsBySeries[0]?.id);
     }
-  }, [queryParams]);
+    console.log(queryParams?.get("opened-series"));
+  }, [queryParams?.get("opened-series")]);
 
   const toggleAccordion = (seriesId: any) => {
     let allowScroll = false;
@@ -97,11 +98,11 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
           block: "start",
         });
       }, 500);
-      window.history.pushState({}, '', "/series?opened-series=" + seriesId)
-      // router.replace("/series?opened-series=" + seriesId);
+      //window.history.pushState({}, '', "/series?opened-series=" + seriesId)
+      router.replace("/series?opened-series=" + seriesId);
     } else {
-      window.history.pushState({}, '', "/series")
-      //router.replace("/series");
+      //window.history.pushState({}, '', "/series")
+      router.replace("/series");
     }
     setSetsBySeries([...setsBySeries]);
   };

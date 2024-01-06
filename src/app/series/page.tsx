@@ -4,6 +4,7 @@ import { getExpansions } from "@/utils/networkCalls";
 import { Metadata } from "next";
 import { Fragment, FunctionComponent, cache } from "react";
 export const revalidate = 60 * 60;
+export const metadata: Metadata = seriesMetaData;
 const getArrayOfSeries = cache(async () => {
   let { arrayOfSeries, sets } = await getExpansions();
   let totalNumberOfSets = 0;
@@ -22,7 +23,7 @@ const getArrayOfSeries = cache(async () => {
   return { arrayOfSeries, totalNumberOfSets };
 });
 
-export const metadata: Metadata = seriesMetaData;
+
 const Series: FunctionComponent = async () => {
   const { arrayOfSeries, totalNumberOfSets } = await getArrayOfSeries();
   return (

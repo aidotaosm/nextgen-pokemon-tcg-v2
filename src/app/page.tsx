@@ -3,7 +3,7 @@ import { Helper } from "@/utils/helper";
 import { getAllCardsJSONFromFileBaseIPFS } from "@/utils/networkCalls";
 import { cache } from "react";
 
-export const revalidate = 234234;
+export const revalidate = 60 * 60 * 24;
 
 const getTenRandomCards = cache(async () => {
   let tenRandomCards = [];

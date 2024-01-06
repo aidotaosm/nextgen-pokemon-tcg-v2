@@ -70,3 +70,6 @@ export interface ModalProps {
   okButtonText?: string;
   handleOkButtonPress?: (e: any) => void;
 }
+export type Props = {
+  params: { setId: string };
+};

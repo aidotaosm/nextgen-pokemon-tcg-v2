@@ -1,3 +1,4 @@
+'use client'
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { PagingComponent } from "../PagingComponent/PagingComponent";
 import {
@@ -6,7 +7,6 @@ import {
   maxPokeDexNumber,
   Vercel_DEFAULT_URL,
 } from "../../constants/constants";
-import { useRouter } from "next/router";
 import { CardsObjectProps } from "../../models/GenericModels";
 
 import { IF } from "../UtilityComponents/IF";
@@ -35,13 +35,16 @@ import regulationMarks from "../../InternalJsons/AllRegulationMarks.json";
 import allSetNames from "../../InternalJsons/AllSetNames.json";
 import { SortOptions, SortOrderOptions } from "../../data";
 import { Helper } from "../../utils/helper";
+import { useRouter, useSearchParams,useParams } from "next/navigation";
 
-export const SetComponent: FunctionComponent<CardsObjectProps> = ({
+const SetComponent: FunctionComponent<CardsObjectProps> = ({
   cardsObject,
   isSearchPage = false,
 }) => {
   const [formInstance] = Form.useForm();
-  let router = useRouter();
+  const router = useRouter();
+  const queryParams = useSearchParams();
+  const paths = useParams();
   const getCardsForServerSide = () => {
     let from = 0 * DEFAULT_PAGE_SIZE;
     let to = (0 + 1) * DEFAULT_PAGE_SIZE;
@@ -77,7 +80,10 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
   useEffect(() => {
     const filterCardsOnLoad = (paramAllCardsREsponse?: any[]) => {
       let routerPageIndex = 0;
-      const fieldValues = router.query as any;
+      const fieldValues: any = {};
+      for (const [key, value] of queryParams?.entries() || []) {
+        fieldValues[key] = value;
+      }
       const filterNames = Object.keys(fieldValues);
       let correctedFieldValues: any = {};
       filterNames.forEach((fieldName) => {
@@ -221,29 +227,31 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
           }
         }
       });
+      const pageFromQuery = queryParams?.get('page');
+      const searchKeyFromQuery = queryParams?.get('search');
       const filterInQueryExists = Object.keys(correctedFieldValues).length;
       if (filterInQueryExists) {
         formInstance.setFieldsValue(correctedFieldValues);
       }
       let tempTotalCount = isSearchPage ? paramAllCardsREsponse?.length : cardsObject.totalCount;
       if (
-        router.query.page &&
-        !isNaN(+router.query.page) &&
-        !isNaN(parseFloat(router.query.page.toString()))
+        pageFromQuery &&
+        !isNaN(+pageFromQuery) &&
+        !isNaN(parseFloat(pageFromQuery.toString()))
       ) {
         if (
-          (+router.query.page + 1) * DEFAULT_PAGE_SIZE >
+          (+pageFromQuery + 1) * DEFAULT_PAGE_SIZE >
           tempTotalCount
         ) {
           let lastPage = Math.floor(tempTotalCount / DEFAULT_PAGE_SIZE);
           routerPageIndex = lastPage;
         } else {
-          routerPageIndex = +router.query.page;
+          routerPageIndex = +pageFromQuery;
         }
       }
       let searchTerm = "";
-      if (router.query.search && typeof router.query.search === "string") {
-        searchTerm = router.query.search;
+      if (searchKeyFromQuery && typeof searchKeyFromQuery === "string") {
+        searchTerm = searchKeyFromQuery;
       }
       if (appState.globalSearchTerm) {
         searchTerm = appState.globalSearchTerm;
@@ -259,7 +267,7 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
         setSearchValue(searchTerm);
       }
     };
-    if ((cardsObject || isSearchPage) && router.isReady) {
+    if ((cardsObject || isSearchPage)) {
       if (isSearchPage) {
         getAllCardsJSONFromFileBaseIPFS()
           .then((allCardsResponse) => {
@@ -273,7 +281,7 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
         filterCardsOnLoad();
       }
     }
-  }, [router.isReady]);
+  }, []);
 
   useEffect(() => {
     let bootStrapMasterClass = appState?.bootstrap;
@@ -751,7 +759,7 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
     });
 
     let updatedQuery =
-      (isSearchPage ? "/search" : "/set/" + router.query.setId) +
+      (isSearchPage ? "/search" : "/set/" + paths?.setId) +
       (newPageIndex || searchValue || filterQuery
         ? "?" +
         (newPageIndex ? "&page=" + newPageIndex : "") +
@@ -759,7 +767,7 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
         filterQuery
         : "");
     const fixedQuery = updatedQuery.replaceAll("?&", "?");
-    router.push(fixedQuery, undefined, { shallow: true });
+    router.push(fixedQuery);
   };
 
   const setSearchValueFunction = (
@@ -797,7 +805,7 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
   }
 
 
-  if (router.isFallback) {
+  if (false) {//router.isFallback
     return (
       <div className="container d-flex flex-grow-1 justify-content-center">
         <h1 className="align-self-center">Set Loading...</h1>
@@ -954,3 +962,4 @@ export const SetComponent: FunctionComponent<CardsObjectProps> = ({
     );
   }
 };
+export default SetComponent;

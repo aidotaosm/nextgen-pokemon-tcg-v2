@@ -25,9 +25,10 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
 }: any) => {
   let router = useRouter();
   const queryParams = useSearchParams();
-  const { updateGlobalSearchTerm } = useContext(AppContext);
+  const { updateGlobalSearchTerm, appState } = useContext(AppContext);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [searchValue, setSearchValue] = useState("");
+  // console.log(appState?.bootstrap);
   useEffect(() => {
     // let arrayOfSets:any[] = [];
     // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
@@ -39,39 +40,40 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
     //   false,
     //   "text/plain"
     // );
-    let selectedSeriesId = queryParams?.get("opened-series");
-    let parentOfAccordionToOpen = document.getElementById(
-      selectedSeriesId || ""
-    );
-    if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {
-      const latestSetAccordion = document.getElementById(setsBySeries[0].id)
-        ?.children[0].children[0] as HTMLElement;
-      latestSetAccordion?.click();
-      const accordionToOpen = parentOfAccordionToOpen.children[0]
-        .children[0] as HTMLElement;
-      accordionToOpen?.click();
-      setTimeout(() => {
-        parentOfAccordionToOpen?.scrollIntoView({
-          behavior: "smooth",
-          inline: "start",
-          block: "start",
+    if (appState?.bootstrap) {
+      let selectedSeriesId = queryParams?.get("opened-series");
+      let parentOfAccordionToOpen = document.getElementById(
+        selectedSeriesId || ""
+      );
+      if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {
+        const latestSetAccordion = document.getElementById(setsBySeries[0].id)
+          ?.children[0].children[0] as HTMLElement;
+        latestSetAccordion?.click();
+        const accordionToOpen = parentOfAccordionToOpen.children[0]
+          .children[0] as HTMLElement;
+        accordionToOpen?.click();
+        setTimeout(() => {
+          parentOfAccordionToOpen?.scrollIntoView({
+            behavior: "smooth",
+            inline: "start",
+            block: "start",
+          });
+        }, 500);
+        setsBySeries.forEach((series) => {
+          if (series.id === selectedSeriesId) {
+            series.isOpen = true;
+          } else {
+            series.isOpen = false;
+          }
         });
-      }, 500);
-      setsBySeries.forEach((series) => {
-        if (series.id === selectedSeriesId) {
-          series.isOpen = true;
-        } else {
-          series.isOpen = false;
-        }
-      });
-      setSetsBySeries([...setsBySeries]);
-      console.log(setsBySeries);
-    } else {
-      //window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
-      router.replace("/series?opened-series=" + setsBySeries[0]?.id);
+        setSetsBySeries([...setsBySeries]);
+        console.log(setsBySeries);
+      } else {
+        //window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
+        router.push("/series?opened-series=" + setsBySeries[0]?.id);
+      }
     }
-    console.log(queryParams?.get("opened-series"));
-  }, [queryParams?.get("opened-series")]);
+  }, [appState?.bootstrap]);
 
   const toggleAccordion = (seriesId: any) => {
     let allowScroll = false;

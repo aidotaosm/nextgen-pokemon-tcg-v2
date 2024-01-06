@@ -31,7 +31,7 @@ export const generateStaticParams = async () => {
     });
   });
   console.log(returnPaths);
-  if (process.env.APP_ENV == "local") {
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT == "Local") {
     returnPaths.splice(1, returnPaths.length - 1);
   }
   // process.env.NODE_ENV

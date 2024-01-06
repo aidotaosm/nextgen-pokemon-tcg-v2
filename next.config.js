@@ -37,7 +37,7 @@ module.exports = withPWA({
   staticPageGenerationTimeout: 1000,
   compiler: {
     removeConsole:
-      process.env.APP_ENV !== "local" && process.env.NODE_ENV !== "development",
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== "local" && process.env.NODE_ENV !== "development",
   },
   experimental: {
     windowHistorySupport: true,

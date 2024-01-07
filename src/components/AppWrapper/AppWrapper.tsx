@@ -1,6 +1,12 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
-import { FunctionComponent, useContext, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  Suspense,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { BasicProps } from "../../models/GenericModels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -241,12 +247,14 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       {/* <ProgressComponent
         isAnimating={isNavigationAnimating}
       ></ProgressComponent> */}
-      <ProgressBar
-        height="4px"
-        color="#fffd00"
-        options={{ showSpinner: false }}
-        shallowRouting
-      />
+      <Suspense fallback={<></>}>
+        <ProgressBar
+          height="4px"
+          color="#fffd00"
+          options={{ showSpinner: false }}
+          shallowRouting
+        />
+      </Suspense>
       <header className="container pt-3 pb-4">
         <div className={"d-flex align-items-center row"}>
           <div className="col d-flex align-items-center">

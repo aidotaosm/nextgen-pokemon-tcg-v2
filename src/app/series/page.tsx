@@ -19,10 +19,9 @@ const getArrayOfSeries = cache(async () => {
       .map((series) => (totalNumberOfSets = series.sets.length))
       .reduce((partialSum, a) => partialSum + a, 0);
   }
-  console.log('getArrayOfSeries');
+  console.log("getArrayOfSeries on the server");
   return { arrayOfSeries, totalNumberOfSets };
 });
-
 
 const Series: FunctionComponent = async () => {
   const { arrayOfSeries, totalNumberOfSets } = await getArrayOfSeries();

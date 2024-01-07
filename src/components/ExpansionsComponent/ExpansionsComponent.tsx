@@ -2,14 +2,14 @@
 import {
   Fragment,
   FunctionComponent,
+  Suspense,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { SeriesArrayProps } from "../../models/GenericModels";
 import styles from "./ExpansionsComponent.module.css";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { logoBlurImage } from "@/base64Images/base64Images";
 import { AppContext } from "../../contexts/AppContext";
@@ -18,62 +18,17 @@ import { LocalSearchComponent } from "../LocalSearchComponent/LocalSearchCompone
 import { PreloadComponent } from "../Preload/PreloadComponent";
 import { Helper } from "../../utils/helper";
 import { Vercel_DEFAULT_URL } from "../../constants/constants";
+import { AcordionToggleComponent } from "./AcordionToggleComponent";
 
 export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
   totalNumberOfSets,
   arrayOfSeries,
 }: any) => {
   let router = useRouter();
-  const queryParams = useSearchParams();
-  const { updateGlobalSearchTerm, appState } = useContext(AppContext);
+  const { updateGlobalSearchTerm } = useContext(AppContext);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [searchValue, setSearchValue] = useState("");
   // console.log(appState?.bootstrap);
-  useEffect(() => {
-    // let arrayOfSets:any[] = [];
-    // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
-    // const xmlText = Helper.generateSiteMap(arrayOfSets, Vercel_DEFAULT_URL + 'set/');
-    // console.log(arrayOfSets);
-    // Helper.saveTemplateAsFile(
-    //   "sitemap.xml",
-    //   xmlText,
-    //   false,
-    //   "text/plain"
-    // );
-    if (appState?.bootstrap) {
-      let selectedSeriesId = queryParams?.get("opened-series");
-      let parentOfAccordionToOpen = document.getElementById(
-        selectedSeriesId || ""
-      );
-      if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {
-        const latestSetAccordion = document.getElementById(setsBySeries[0].id)
-          ?.children[0].children[0] as HTMLElement;
-        latestSetAccordion?.click();
-        const accordionToOpen = parentOfAccordionToOpen.children[0]
-          .children[0] as HTMLElement;
-        accordionToOpen?.click();
-        setTimeout(() => {
-          parentOfAccordionToOpen?.scrollIntoView({
-            behavior: "smooth",
-            inline: "start",
-            block: "start",
-          });
-        }, 500);
-        setsBySeries.forEach((series) => {
-          if (series.id === selectedSeriesId) {
-            series.isOpen = true;
-          } else {
-            series.isOpen = false;
-          }
-        });
-        setSetsBySeries([...setsBySeries]);
-        console.log(setsBySeries);
-      } else {
-        //window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
-        router.push("/series?opened-series=" + setsBySeries[0]?.id);
-      }
-    }
-  }, [appState?.bootstrap]);
 
   const toggleAccordion = (seriesId: any) => {
     let allowScroll = false;
@@ -234,6 +189,12 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
           })}
         </div>
       </div>
+      <Suspense fallback={<></>}>
+        <AcordionToggleComponent
+          setSetsBySeries={setSetsBySeries}
+          setsBySeries={setsBySeries}
+        />
+      </Suspense>
     </Fragment>
   );
 };

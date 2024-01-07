@@ -7,14 +7,14 @@ export const seriesMetaData: Metadata = {
   openGraph: {
     title: "Pokemon TCG Expansions",
     description: "Browse through all the Pokemon TCG expansions!",
-    images: [{ url: "images/expansions_image.jpg" }],
+    images: [{ url: "/images/expansions_image.jpg" }],
     url: Helper.getBaseDomainServerSide() + "series",
   },
   twitter: {
     title: "Pokemon TCG Expansions",
     description: "Browse through all the Pokemon TCG expansions!",
     images: {
-      url: "images/expansions_image.jpg",
+      url: "/images/expansions_image.jpg",
     },
   },
 };

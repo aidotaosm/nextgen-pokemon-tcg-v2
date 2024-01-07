@@ -5,6 +5,7 @@ import { Props } from "@/models/GenericModels";
 import { Helper } from "@/utils/helper";
 import { getAllSetCards, getExpansions } from "@/utils/networkCalls";
 import { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 export let revalidate = 60 * 60 * 24;
 export const dynamicParams = true;
@@ -99,6 +100,9 @@ export async function generateMetadata(
 
 const SetDetails = async ({ params }: Props) => {
   const cardsObject = await getSetOnServer(params.setId);
+  if (!cardsObject?.data?.length) {
+    notFound();
+  }
   return (
     <>
       <SetComponent cardsObject={cardsObject} />

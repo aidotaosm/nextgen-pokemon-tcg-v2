@@ -55,11 +55,11 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
           block: "start",
         });
       }, 500);
-      //window.history.pushState({}, '', "/series?opened-series=" + seriesId)
-      router.replace("/series?opened-series=" + seriesId);
+      window.history.pushState({}, "", "/series?opened-series=" + seriesId);
+      //router.push("/series?opened-series=" + seriesId);
     } else {
-      //window.history.pushState({}, '', "/series")
-      router.replace("/series");
+      window.history.pushState({}, "", "/series");
+      //router.push("/series");
     }
     setSetsBySeries([...setsBySeries]);
   };

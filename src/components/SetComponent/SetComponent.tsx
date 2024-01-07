@@ -1,5 +1,11 @@
-'use client'
-import { FunctionComponent, useContext, useEffect, useState } from "react";
+"use client";
+import {
+  FunctionComponent,
+  Suspense,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { PagingComponent } from "../PagingComponent/PagingComponent";
 import {
   DEFAULT_PAGE_SIZE,
@@ -17,25 +23,18 @@ import { AppContext } from "../../contexts/AppContext";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
 import { logoBlurImage } from "@/base64Images/base64Images";
 import { LocalSearchComponent } from "../LocalSearchComponent/LocalSearchComponent";
-import {
-  getAllCardsJSONFromFileBaseIPFS,
-  getCardsFromNextServer,
-} from "../../utils/networkCalls";
+import { getCardsFromNextServer } from "../../utils/networkCalls";
 import { SidebarFiltersComponent } from "../SidebarFiltersComponent/SidebarFiltersComponent";
 import { Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
 import Tooltip from "bootstrap/js/dist/tooltip";
-import { FilterFieldNames, ValidHPRange, ValidRetreatCostRange } from "../../models/Enums";
-import energyTypes from "../../InternalJsons/AllTypes.json";
+import { FilterFieldNames } from "../../models/Enums";
 import superTypes from "../../InternalJsons/AllSuperTypes.json";
-import subTypes from "../../InternalJsons/AllSubtypes.json";
-import rarities from "../../InternalJsons/AllRarities.json";
-import regulationMarks from "../../InternalJsons/AllRegulationMarks.json";
-import allSetNames from "../../InternalJsons/AllSetNames.json";
 import { SortOptions, SortOrderOptions } from "../../data";
 import { Helper } from "../../utils/helper";
-import { useRouter, useSearchParams,useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+import { SetOnLoadComponent } from "./SetOnLoadComponent";
 
 const SetComponent: FunctionComponent<CardsObjectProps> = ({
   cardsObject,
@@ -43,7 +42,6 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
 }) => {
   const [formInstance] = Form.useForm();
   const router = useRouter();
-  const queryParams = useSearchParams();
   const paths = useParams();
   const getCardsForServerSide = () => {
     let from = 0 * DEFAULT_PAGE_SIZE;
@@ -51,16 +49,14 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
     let changedSetOfCards: any[] | null = null;
     if (!isSearchPage) {
       changedSetOfCards = cardsObject?.data.slice(from, to);
-    };
+    }
     return changedSetOfCards;
-  }
+  };
   const [totalCount, setTotalCount] = useState<number>(
     cardsObject?.totalCount || 0
   );
   const [allCardsFromNetwork, setAllCardsFromNetwork] = useState<any[]>([]);
-  const [setCards, setSetCards] = useState<any>(
-    getCardsForServerSide()
-  );
+  const [setCards, setSetCards] = useState<any>(getCardsForServerSide());
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [refPageNumber, setRefPageNumber] = useState<number>(0);
   const {
@@ -76,212 +72,6 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
   const getUpdatedView = (view: boolean) => {
     updateGridView?.(view);
   };
-
-  useEffect(() => {
-    const filterCardsOnLoad = (paramAllCardsREsponse?: any[]) => {
-      let routerPageIndex = 0;
-      const fieldValues: any = {};
-      for (const [key, value] of queryParams?.entries() || []) {
-        fieldValues[key] = value;
-      }
-      const filterNames = Object.keys(fieldValues);
-      let correctedFieldValues: any = {};
-      filterNames.forEach((fieldName) => {
-        if (fieldValues[fieldName]) {
-          const fieldValue = fieldValues[fieldName];
-          switch (fieldName) {
-            case FilterFieldNames.energyType:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((energy) => {
-                  if (energyTypes.includes(energy)) {
-                    correctedFieldValues[fieldName].push(energy);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.weakness:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((weakness) => {
-                  if (energyTypes.includes(weakness)) {
-                    correctedFieldValues[fieldName].push(weakness);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.resistance:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((resistance) => {
-                  if (energyTypes.includes(resistance)) {
-                    correctedFieldValues[fieldName].push(resistance);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.regulationMarks:
-              if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((regulationMark) => {
-                  if (regulationMarks.includes(regulationMark)) {
-                    correctedFieldValues[fieldName].push(regulationMark);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.set:
-              if (fieldValue.length && isSearchPage) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((setId) => {
-                  if (allSetNames.find(x => x[0] === setId)) {
-                    correctedFieldValues[fieldName].push(setId);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.subType:
-              if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((subType) => {
-                  if (subTypes.includes(subType)) {
-                    correctedFieldValues[fieldName].push(subType);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.rarity:
-              if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((rarity) => {
-                  if (rarities.includes(rarity)) {
-                    correctedFieldValues[fieldName].push(rarity);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.hpRange:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((hp) => {
-                  if (ValidHPRange.max >= +hp && ValidHPRange.min <= +hp) {
-                    correctedFieldValues[fieldName].push(+hp);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.retreatCost:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((retreatCost) => {
-                  if (ValidRetreatCostRange.max >= +retreatCost && ValidRetreatCostRange.min <= +retreatCost) {
-                    correctedFieldValues[fieldName].push(+retreatCost);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.cardType:
-              if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
-                correctedFieldValues[fieldName] = [];
-                TypedFieldValue.forEach((cardType) => {
-                  if (superTypes.includes(cardType)) {
-                    correctedFieldValues[fieldName].push(cardType);
-                  }
-                });
-              }
-              break;
-            case FilterFieldNames.textSearch:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
-                correctedFieldValues[fieldName] = TypedFieldValue;
-              }
-              break;
-            case FilterFieldNames.sortLevelOne:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
-                correctedFieldValues[fieldName] = '';
-                if (Object.keys(SortOptions).includes(TypedFieldValue)) {
-                  correctedFieldValues[fieldName] = TypedFieldValue;
-                }
-              }
-              break;
-            case FilterFieldNames.sortLevelOneOrder:
-              if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
-                correctedFieldValues[fieldName] = '';
-                if (Object.keys(SortOrderOptions).includes(TypedFieldValue)) {
-                  correctedFieldValues[fieldName] = TypedFieldValue;
-                }
-              }
-              break;
-          }
-        }
-      });
-      const pageFromQuery = queryParams?.get('page');
-      const searchKeyFromQuery = queryParams?.get('search');
-      const filterInQueryExists = Object.keys(correctedFieldValues).length;
-      if (filterInQueryExists) {
-        formInstance.setFieldsValue(correctedFieldValues);
-      }
-      let tempTotalCount = isSearchPage ? paramAllCardsREsponse?.length : cardsObject.totalCount;
-      if (
-        pageFromQuery &&
-        !isNaN(+pageFromQuery) &&
-        !isNaN(parseFloat(pageFromQuery.toString()))
-      ) {
-        if (
-          (+pageFromQuery + 1) * DEFAULT_PAGE_SIZE >
-          tempTotalCount
-        ) {
-          let lastPage = Math.floor(tempTotalCount / DEFAULT_PAGE_SIZE);
-          routerPageIndex = lastPage;
-        } else {
-          routerPageIndex = +pageFromQuery;
-        }
-      }
-      let searchTerm = "";
-      if (searchKeyFromQuery && typeof searchKeyFromQuery === "string") {
-        searchTerm = searchKeyFromQuery;
-      }
-      if (appState.globalSearchTerm) {
-        searchTerm = appState.globalSearchTerm;
-      }
-      if (routerPageIndex !== pageIndex || searchTerm || filterInQueryExists || isSearchPage) {
-        pageChanged(
-          routerPageIndex,
-          searchTerm,
-          undefined,
-          correctedFieldValues,
-          paramAllCardsREsponse
-        );
-        setSearchValue(searchTerm);
-      }
-    };
-    if ((cardsObject || isSearchPage)) {
-      if (isSearchPage) {
-        getAllCardsJSONFromFileBaseIPFS()
-          .then((allCardsResponse) => {
-            setAllCardsFromNetwork(allCardsResponse);
-            filterCardsOnLoad(allCardsResponse);
-          })
-          .catch((e) => {
-            console.log(e, "allCardsResponse error");
-          });
-      } else {
-        filterCardsOnLoad();
-      }
-    }
-  }, []);
 
   useEffect(() => {
     let bootStrapMasterClass = appState?.bootstrap;
@@ -322,7 +112,9 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
         ? textSearchValue
         : formInstance.getFieldsValue()?.[FilterFieldNames.textSearch];
     let tempChangedCards: any[] = initialCards.filter((item: any) => {
-      return item.name.toLowerCase().includes(tempSearchValue.toLowerCase().trim());
+      return item.name
+        .toLowerCase()
+        .includes(tempSearchValue.toLowerCase().trim());
     });
     const fieldValues = instantFilterValues || formInstance.getFieldsValue();
     const filterNames = Object.keys(fieldValues);
@@ -348,7 +140,10 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
               TypedFieldValue.forEach((weakness) => {
                 tempChangedCards = tempChangedCards.filter((card: any) => {
                   return (
-                    card.weaknesses && (card.weaknesses as { type: string, value: string }[]).find(weaknessObject => weaknessObject.type === weakness)
+                    card.weaknesses &&
+                    (card.weaknesses as { type: string; value: string }[]).find(
+                      (weaknessObject) => weaknessObject.type === weakness
+                    )
                   );
                 });
               });
@@ -360,7 +155,12 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
               TypedFieldValue.forEach((resistance) => {
                 tempChangedCards = tempChangedCards.filter((card: any) => {
                   return (
-                    card.resistances && (card.resistances as { type: string, value: string }[]).find(resistanceObject => resistanceObject.type === resistance)
+                    card.resistances &&
+                    (
+                      card.resistances as { type: string; value: string }[]
+                    ).find(
+                      (resistanceObject) => resistanceObject.type === resistance
+                    )
                   );
                 });
               });
@@ -376,7 +176,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
                   ...tempChangedCards.filter((card: any) => {
                     return (
                       card.regulationMark &&
-                      (card.regulationMark === regulationMark)
+                      card.regulationMark === regulationMark
                     );
                   }),
                 ];
@@ -396,9 +196,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
                 setResult = [
                   ...setResult,
                   ...tempChangedCards.filter((card: any) => {
-                    return (
-                      card.set.id === setId
-                    );
+                    return card.set.id === setId;
                   }),
                 ];
               });
@@ -413,12 +211,20 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
               let TypedFieldValue = tempTextSearchValue.toLowerCase() as string;
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
-                  (
-                    card.attacks?.find((attack: { name: string, text: string }) => (attack.name.toLowerCase().includes(TypedFieldValue) || attack.text?.toLowerCase().includes(TypedFieldValue))) ||
-                    card.abilities?.find((ability: { name: string, text: string }) => (ability.name.toLowerCase().includes(TypedFieldValue) || ability.text?.toLowerCase().includes(TypedFieldValue))) ||
-                    card.rules?.find((rule: string) => rule.toLowerCase().includes(TypedFieldValue))
+                  card.attacks?.find(
+                    (attack: { name: string; text: string }) =>
+                      attack.name.toLowerCase().includes(TypedFieldValue) ||
+                      attack.text?.toLowerCase().includes(TypedFieldValue)
+                  ) ||
+                  card.abilities?.find(
+                    (ability: { name: string; text: string }) =>
+                      ability.name.toLowerCase().includes(TypedFieldValue) ||
+                      ability.text?.toLowerCase().includes(TypedFieldValue)
+                  ) ||
+                  card.rules?.find((rule: string) =>
+                    rule.toLowerCase().includes(TypedFieldValue)
                   )
-                )
+                );
               });
             }
             break;
@@ -466,7 +272,10 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
               let TypedFieldValue = fieldValue as number[];
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
-                  (card.hp && (+card.hp as number) >= TypedFieldValue[0] && (+card.hp as number) <= TypedFieldValue[1]) || (card.supertype !== superTypes[1])
+                  (card.hp &&
+                    (+card.hp as number) >= TypedFieldValue[0] &&
+                    (+card.hp as number) <= TypedFieldValue[1]) ||
+                  card.supertype !== superTypes[1]
                 );
               });
             }
@@ -476,9 +285,15 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
               let TypedFieldValue = fieldValue as number[];
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
-                  (card.convertedRetreatCost && (+card.convertedRetreatCost as number) >= TypedFieldValue[0] && (+card.convertedRetreatCost as number) <= TypedFieldValue[1]) ||
-                  (card.supertype === superTypes[1] && card.convertedRetreatCost === undefined && TypedFieldValue[0] === 0) ||
-                  (card.supertype !== superTypes[1])
+                  (card.convertedRetreatCost &&
+                    (+card.convertedRetreatCost as number) >=
+                      TypedFieldValue[0] &&
+                    (+card.convertedRetreatCost as number) <=
+                      TypedFieldValue[1]) ||
+                  (card.supertype === superTypes[1] &&
+                    card.convertedRetreatCost === undefined &&
+                    TypedFieldValue[0] === 0) ||
+                  card.supertype !== superTypes[1]
                 );
               });
             }
@@ -501,38 +316,49 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
           case FilterFieldNames.sortLevelOne:
             if (fieldValue) {
               let TypedFieldValue = fieldValue as keyof typeof SortOptions;
-              if (TypedFieldValue === 'sortByDexNumber') {
+              if (TypedFieldValue === "sortByDexNumber") {
                 tempChangedCards.sort(
-                  (firstColumn, secondColumn) => (firstColumn.nationalPokedexNumbers?.[0] || maxPokeDexNumber) - (secondColumn.nationalPokedexNumbers?.[0] || maxPokeDexNumber)
+                  (firstColumn, secondColumn) =>
+                    (firstColumn.nationalPokedexNumbers?.[0] ||
+                      maxPokeDexNumber) -
+                    (secondColumn.nationalPokedexNumbers?.[0] ||
+                      maxPokeDexNumber)
                 );
-              } else if (TypedFieldValue === 'sortByHP') {
+              } else if (TypedFieldValue === "sortByHP") {
                 tempChangedCards.sort(
-                  (firstColumn, secondColumn) => (+firstColumn.hp || maxHP) - (+secondColumn.hp || maxHP)
+                  (firstColumn, secondColumn) =>
+                    (+firstColumn.hp || maxHP) - (+secondColumn.hp || maxHP)
                 );
-              } else if (TypedFieldValue === 'sortByName') {
-                tempChangedCards.sort(
-                  (firstColumn, secondColumn) => firstColumn.name.localeCompare(secondColumn.name)
+              } else if (TypedFieldValue === "sortByName") {
+                tempChangedCards.sort((firstColumn, secondColumn) =>
+                  firstColumn.name.localeCompare(secondColumn.name)
                 );
-              } else if (TypedFieldValue === 'energyType') {
-                tempChangedCards.sort(
-                  (firstColumn, secondColumn) => {
-                    let comparisonResult = 0;
-                    if (firstColumn.types?.[0] && secondColumn.types?.[0]) {
-                      comparisonResult = firstColumn.types[0].localeCompare(secondColumn.types[0])
-                    } else if (firstColumn.types?.[0]) {
-                      comparisonResult = firstColumn.types[0];
-                    } else if (secondColumn.types?.[0]) {
-                      comparisonResult = secondColumn.types[0];
-                    } else {
-                      comparisonResult = maxPokeDexNumber;
-                    }
-
-                    return comparisonResult;
+              } else if (TypedFieldValue === "energyType") {
+                tempChangedCards.sort((firstColumn, secondColumn) => {
+                  let comparisonResult = 0;
+                  if (firstColumn.types?.[0] && secondColumn.types?.[0]) {
+                    comparisonResult = firstColumn.types[0].localeCompare(
+                      secondColumn.types[0]
+                    );
+                  } else if (firstColumn.types?.[0]) {
+                    comparisonResult = firstColumn.types[0];
+                  } else if (secondColumn.types?.[0]) {
+                    comparisonResult = secondColumn.types[0];
+                  } else {
+                    comparisonResult = maxPokeDexNumber;
                   }
-                );
-              } else if (TypedFieldValue === 'releaseDate') {
-                tempChangedCards.sort(
-                  (firstColumn, secondColumn) => (new Date(firstColumn.set.releaseDate) > new Date(secondColumn.set.releaseDate)) ? 1 : ((new Date(firstColumn.set.releaseDate) === new Date(secondColumn.set.releaseDate)) ? 0 : -1)
+
+                  return comparisonResult;
+                });
+              } else if (TypedFieldValue === "releaseDate") {
+                tempChangedCards.sort((firstColumn, secondColumn) =>
+                  new Date(firstColumn.set.releaseDate) >
+                  new Date(secondColumn.set.releaseDate)
+                    ? 1
+                    : new Date(firstColumn.set.releaseDate) ===
+                      new Date(secondColumn.set.releaseDate)
+                    ? 0
+                    : -1
                 );
               }
             }
@@ -540,9 +366,9 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
           case FilterFieldNames.sortLevelOneOrder:
             if (fieldValue) {
               let TypedFieldValue = fieldValue as keyof typeof SortOrderOptions;
-              if (TypedFieldValue === 'asc') {
+              if (TypedFieldValue === "asc") {
                 // tempChangedCards.reverse();
-              } else if (TypedFieldValue === 'desc') {
+              } else if (TypedFieldValue === "desc") {
                 tempChangedCards.reverse();
               }
             }
@@ -762,9 +588,9 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
       (isSearchPage ? "/search" : "/set/" + paths?.setId) +
       (newPageIndex || searchValue || filterQuery
         ? "?" +
-        (newPageIndex ? "&page=" + newPageIndex : "") +
-        (searchValue ? "&search=" + searchValue : "") +
-        filterQuery
+          (newPageIndex ? "&page=" + newPageIndex : "") +
+          (searchValue ? "&search=" + searchValue : "") +
+          filterQuery
         : "");
     const fixedQuery = updatedQuery.replaceAll("?&", "?");
     router.push(fixedQuery);
@@ -799,13 +625,13 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
   };
 
   const resetFilters = () => {
-    setSearchValue('');
+    setSearchValue("");
     formInstance.resetFields();
-    pageChanged(0, '', '');
-  }
+    pageChanged(0, "", "");
+  };
 
-
-  if (false) {//router.isFallback
+  if (false) {
+    //router.isFallback this is not necessary or possible in approuter - depricated
     return (
       <div className="container d-flex flex-grow-1 justify-content-center">
         <h1 className="align-self-center">Set Loading...</h1>
@@ -813,152 +639,166 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
     );
   } else {
     return (
-      <div className="container d-flex flex-column" onClick={hideAllTollTips}>
-        <div
-          className="d-flex justify-content-center mb-4 align-items-center"
-          style={{ height: "5rem", minHeight: "5rem", overflow: "hidden" }}
-        >
-          <IF condition={isSearchPage}>
-            <h1 className="h4">
-              Fastest Pokemon card search experience out there!
-            </h1>
-          </IF>
-          {!isSearchPage && <>
-            <div
-              className={
-                "position-relative w-100 " +
-                (!appState.offLineMode ? "d-block" : "d-none")
-              }
-              style={{ height: "5rem" }}
-            >
-              <ImageComponent
-                src={cardsObject.data[0].set?.images?.logo}
-                alt={cardsObject.data[0].set.name}
-                shouldFill={true}
-                blurDataURL={logoBlurImage}
-                fallBackType="logo"
-                fallbackImage={"/images/International_Pokémon_logo.png"}
-              />
-            </div>
-            <h1
-              className={
-                "mb-0 ms-3 h4 " +
-                (appState.offLineMode ? "d-block" : "d-none")
-              }
-            >
-              {cardsObject.data[0].set.name +
-                " set of " +
-                cardsObject.data[0].set.series}{" "}
-              series
-            </h1>
-          </>}
-
-        </div>
-        <div className="mb-4 row row-cols-2 row-cols-md-3 buttons-wrapper">
-          <div className="d-flex align-items-center col col-12 col-md-4 mb-4 mb-md-0">
-            <div
-              className="sidebar-trigger cursor-pointer"
-              data-bs-title={"Show / Hide filters."}
-              data-bs-toggle="tooltip"
-              data-bs-trigger="hover"
-              data-bs-placement="top"
-              id={filterButtonTooltipId}
-            >
-              <IF condition={!appState.sidebarCollapsed}>
-                <FontAwesomeIcon
-                  size="2x"
-                  icon={faBarsStaggered}
-                  onClick={(e) => {
-                    updateSidebarCollapsed?.(!appState.sidebarCollapsed);
-                  }}
+      <>
+        <div className="container d-flex flex-column" onClick={hideAllTollTips}>
+          <div
+            className="d-flex justify-content-center mb-4 align-items-center"
+            style={{ height: "5rem", minHeight: "5rem", overflow: "hidden" }}
+          >
+            <IF condition={isSearchPage}>
+              <h1 className="h4">
+                Fastest Pokemon card search experience out there!
+              </h1>
+            </IF>
+            {!isSearchPage && (
+              <>
+                <div
+                  className={
+                    "position-relative w-100 " +
+                    (!appState.offLineMode ? "d-block" : "d-none")
+                  }
+                  style={{ height: "5rem" }}
+                >
+                  <ImageComponent
+                    src={cardsObject.data[0].set?.images?.logo}
+                    alt={cardsObject.data[0].set.name}
+                    shouldFill={true}
+                    blurDataURL={logoBlurImage}
+                    fallBackType="logo"
+                    fallbackImage={"/images/International_Pokémon_logo.png"}
+                  />
+                </div>
+                <h1
+                  className={
+                    "mb-0 ms-3 h4 " +
+                    (appState.offLineMode ? "d-block" : "d-none")
+                  }
+                >
+                  {cardsObject.data[0].set.name +
+                    " set of " +
+                    cardsObject.data[0].set.series}{" "}
+                  series
+                </h1>
+              </>
+            )}
+          </div>
+          <div className="mb-4 row row-cols-2 row-cols-md-3 buttons-wrapper">
+            <div className="d-flex align-items-center col col-12 col-md-4 mb-4 mb-md-0">
+              <div
+                className="sidebar-trigger cursor-pointer"
+                data-bs-title={"Show / Hide filters."}
+                data-bs-toggle="tooltip"
+                data-bs-trigger="hover"
+                data-bs-placement="top"
+                id={filterButtonTooltipId}
+              >
+                <IF condition={!appState.sidebarCollapsed}>
+                  <FontAwesomeIcon
+                    size="2x"
+                    icon={faBarsStaggered}
+                    onClick={(e) => {
+                      updateSidebarCollapsed?.(!appState.sidebarCollapsed);
+                    }}
+                  />
+                </IF>
+                <IF condition={appState.sidebarCollapsed}>
+                  <FontAwesomeIcon
+                    size="2x"
+                    icon={faBars}
+                    onClick={(e) => {
+                      updateSidebarCollapsed?.(!appState.sidebarCollapsed);
+                    }}
+                  />
+                </IF>
+              </div>
+              <div className=" flex-grow-1 ms-2">
+                <LocalSearchComponent
+                  setSearchValueFunction={setSearchValueFunction}
+                  defaultSearchTerm={searchValue}
+                  initialPlaceHolder={
+                    isSearchPage ? "Global search e.g. " : "Search in set e.g. "
+                  }
+                  disabled={isSearchPage && setCards === null}
+                  setCards={isSearchPage ? null : cardsObject.data}
                 />
-              </IF>
-              <IF condition={appState.sidebarCollapsed}>
-                <FontAwesomeIcon
-                  size="2x"
-                  icon={faBars}
-                  onClick={(e) => {
-                    updateSidebarCollapsed?.(!appState.sidebarCollapsed);
-                  }}
-                />
-              </IF>
+              </div>
             </div>
-            <div className=" flex-grow-1 ms-2">
-              <LocalSearchComponent
-                setSearchValueFunction={setSearchValueFunction}
-                defaultSearchTerm={searchValue}
-                initialPlaceHolder={
-                  isSearchPage ? "Global search e.g. " : "Search in set e.g. "
+            <PagingComponent
+              pageChanged={pageChanged}
+              paramPageSize={DEFAULT_PAGE_SIZE}
+              paramNumberOfElements={totalCount}
+              paramPageIndex={pageIndex}
+              syncPagingReferences={syncPagingReferences}
+              pageNumber={refPageNumber}
+              isLoading={isLoading}
+              disabled={isSearchPage && setCards === null}
+            >
+              <ListOrGridViewToggle
+                isGridView={appState.gridView}
+                getUpdatedView={getUpdatedView}
+                additionalClasses={
+                  totalCount > DEFAULT_PAGE_SIZE ? "col-4" : "col-12"
                 }
-                disabled={isSearchPage && setCards === null}
-                setCards={isSearchPage ? null : cardsObject.data}
+              ></ListOrGridViewToggle>
+            </PagingComponent>
+          </div>
+          <div
+            className={
+              "d-flex sidebar-content-wrapper h-100 " +
+              (appState.sidebarCollapsed ? "collapsed" : "")
+            }
+          >
+            <div className={"sidebar"}>
+              <SidebarFiltersComponent
+                resetFilters={resetFilters}
+                setId={setCards?.[0]?.set?.id}
+                isSearchPage={isSearchPage}
+                formInstance={formInstance}
+                triggerFilter={triggerFilter}
               />
             </div>
+            <IF condition={appState.gridView}>
+              <GridViewComponent setCards={setCards}></GridViewComponent>
+            </IF>
+            <IF condition={!appState.gridView}>
+              <ListViewComponent setCards={setCards}></ListViewComponent>
+            </IF>
           </div>
-          <PagingComponent
-            pageChanged={pageChanged}
-            paramPageSize={DEFAULT_PAGE_SIZE}
-            paramNumberOfElements={totalCount}
-            paramPageIndex={pageIndex}
-            syncPagingReferences={syncPagingReferences}
-            pageNumber={refPageNumber}
-            isLoading={isLoading}
-            disabled={isSearchPage && setCards === null}
-          >
-            <ListOrGridViewToggle
-              isGridView={appState.gridView}
-              getUpdatedView={getUpdatedView}
-              additionalClasses={
-                totalCount > DEFAULT_PAGE_SIZE ? "col-4" : "col-12"
-              }
-            ></ListOrGridViewToggle>
-          </PagingComponent>
-        </div>
-        <div
-          className={
-            "d-flex sidebar-content-wrapper h-100 " +
-            (appState.sidebarCollapsed ? "collapsed" : "")
-          }
-        >
-          <div className={"sidebar"}>
-            <SidebarFiltersComponent
-              resetFilters={resetFilters}
-              setId={setCards?.[0]?.set?.id}
-              isSearchPage={isSearchPage}
-              formInstance={formInstance}
-              triggerFilter={triggerFilter}
-            />
+          <div className="mt-4 row row-cols-2 row-cols-md-3">
+            <div className="col d-none d-md-block"></div>
+            <PagingComponent
+              pageChanged={pageChanged}
+              paramPageSize={DEFAULT_PAGE_SIZE}
+              paramNumberOfElements={totalCount}
+              paramPageIndex={pageIndex}
+              syncPagingReferences={syncPagingReferences}
+              pageNumber={refPageNumber}
+              isLoading={isLoading}
+              disabled={isSearchPage && setCards === null}
+              bottomScroll={true}
+            >
+              <ListOrGridViewToggle
+                isGridView={appState.gridView}
+                getUpdatedView={getUpdatedView}
+                additionalClasses={
+                  totalCount > DEFAULT_PAGE_SIZE ? "col-4" : "col-12"
+                }
+              ></ListOrGridViewToggle>
+            </PagingComponent>
           </div>
-          <IF condition={appState.gridView}>
-            <GridViewComponent setCards={setCards}></GridViewComponent>
-          </IF>
-          <IF condition={!appState.gridView}>
-            <ListViewComponent setCards={setCards}></ListViewComponent>
-          </IF>
         </div>
-        <div className="mt-4 row row-cols-2 row-cols-md-3">
-          <div className="col d-none d-md-block"></div>
-          <PagingComponent
+        <Suspense fallback={<></>}>
+          <SetOnLoadComponent
+            isSearchPage={isSearchPage}
+            formInstance={formInstance}
+            cardsObject={cardsObject}
             pageChanged={pageChanged}
-            paramPageSize={DEFAULT_PAGE_SIZE}
-            paramNumberOfElements={totalCount}
-            paramPageIndex={pageIndex}
-            syncPagingReferences={syncPagingReferences}
-            pageNumber={refPageNumber}
-            isLoading={isLoading}
-            disabled={isSearchPage && setCards === null}
-            bottomScroll={true}
-          >
-            <ListOrGridViewToggle
-              isGridView={appState.gridView}
-              getUpdatedView={getUpdatedView}
-              additionalClasses={
-                totalCount > DEFAULT_PAGE_SIZE ? "col-4" : "col-12"
-              }
-            ></ListOrGridViewToggle>
-          </PagingComponent>
-        </div>
-      </div>
+            pageIndex={pageIndex}
+            setSearchValue={setSearchValue}
+            setAllCardsFromNetwork={setAllCardsFromNetwork}
+          />
+        </Suspense>
+      </>
     );
   }
 };

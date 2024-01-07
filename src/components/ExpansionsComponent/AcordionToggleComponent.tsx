@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { AppContext } from "@/contexts/AppContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
@@ -10,7 +10,7 @@ export const AcordionToggleComponent = ({
   setsBySeries: any[];
   setSetsBySeries: (e: any[]) => void;
 }) => {
-  const { updateGlobalSearchTerm, appState } = useContext(AppContext);
+  const { appState } = useContext(AppContext);
   const queryParams = useSearchParams();
   let router = useRouter();
   useEffect(() => {
@@ -51,10 +51,14 @@ export const AcordionToggleComponent = ({
           }
         });
         setSetsBySeries([...setsBySeries]);
-        console.log(setsBySeries);
+        console.log("AcordionToggleComponent");
       } else {
-        //window.history.pushState({}, '', "/series?opened-series=" + setsBySeries[0]?.id)
-        router.push("/series?opened-series=" + setsBySeries[0]?.id);
+        window.history.pushState(
+          {},
+          "",
+          "/series?opened-series=" + setsBySeries[0]?.id
+        );
+        // router.push("/series?opened-series=" + setsBySeries[0]?.id);
       }
     }
   }, [appState?.bootstrap]);

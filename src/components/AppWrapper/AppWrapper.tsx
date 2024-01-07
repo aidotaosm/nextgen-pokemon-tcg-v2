@@ -30,6 +30,7 @@ import { Helper } from "../../utils/helper";
 import Link from "next/link";
 import { ToastComponent } from "../UtilityComponents/ToastComponent";
 import { Tooltip } from "bootstrap";
+import { BeckButtonHistoryComponent } from "./BeckButtonHistoryComponent";
 //declare let self: ServiceWorkerGlobalScope;
 
 interface LocalAppInterface {
@@ -451,6 +452,13 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
             : "Service worker couldn't be installed. You can continue to use the site normally. But offline features have been turned off. You may try refreshing the page or using a different (newer) browser."}
         </div>
       </ToastComponent>
+      <Suspense>
+        <BeckButtonHistoryComponent
+          setListOfPaths={setListOfPaths}
+          setPathToRedirect={setPathToRedirect}
+          listOfPaths={listOfPaths}
+        />
+      </Suspense>
     </div>
   );
 };

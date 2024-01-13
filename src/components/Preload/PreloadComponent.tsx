@@ -45,7 +45,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   const [prefetchingSets, setPrefetchingSets] = useState<any[]>([]);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [totalNumberOfSetsDone, setTotalNumberOfSetsDone] = useState<number>(0);
-  const [shouldCancel, setShouldCancel] = useState<boolean>(false);
+  const [shouldCancel, setShouldCancel] = useState<boolean>(true);
   const [lastSeriesAndSetIndexes, setLastSeriesAndSetIndexes] = useState({
     lastSeriesIndex: 0,
     lastSetOfSeriesIndex: 0,
@@ -95,7 +95,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   useEffect(() => {
     const onToastShowHandler = async () => {
       triggerSearchPagePrefetch();
-      await triggerPrefetch();
+      //await triggerPrefetch();
     };
     const myToastEl = document.getElementById(prefetchToastId) as HTMLElement;
     if (myToastEl) {
@@ -119,6 +119,21 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     router.prefetch("/series");
     setSearchPageDownloaded("yes");
   };
+
+  const promiseWrappedPrefetch = async (
+    urlToPrefetch: string,
+    callTime: number
+  ) => {
+    let retrunVal = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        router.prefetch(urlToPrefetch);
+        resolve(urlToPrefetch + " has been prefetched");
+      }, callTime);
+    });
+    console.log(retrunVal);
+    return retrunVal;
+  };
+
   const triggerPrefetch = async () => {
     let localShouldCancel = false;
     let setsWithCallUrls: any[] = [];
@@ -129,19 +144,18 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     const batchAndExecutePrefetchThenClearUrls = async (setIndex: number) => {
       setPrefetchingSets(setsWithCallUrls);
       let calls = setsWithCallUrls.map(async (set) => {
-        await router.prefetch(set.callUrl);
-        // , undefined, {
-        //   unstable_skipClientCache: true,
-        // }
+        let randomNumber = Helper.randDelay(200, 1000);
+        await promiseWrappedPrefetch(set.callUrl, randomNumber);
         flushSync(() => {
           setShouldCancel((x) => {
             localShouldCancel = x;
             return x;
           });
         });
-
+        //console.log(set.callUrl, randomNumber);
         set.done = true;
-        setPrefetchingSets([...setsWithCallUrls]);
+        const updatedSetsWithCallUrls = [...setsWithCallUrls];
+        setPrefetchingSets(updatedSetsWithCallUrls);
         setTotalNumberOfSetsDone((e) => ++e);
         if (localShouldCancel) {
           throw new Error("manual abort");
@@ -317,13 +331,13 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
 
         new bootStrapMasterClass.Toast(toastLiveExample).show();
         //resetting all related states for new fetch session
-        setPrefetchingSets([]);
-        setTotalNumberOfSetsDone(0);
-        setShouldCancel(false);
-        setLastSeriesAndSetIndexes({
-          lastSeriesIndex: 0,
-          lastSetOfSeriesIndex: 0,
-        });
+        //setPrefetchingSets([]);
+        //setTotalNumberOfSetsDone(0);
+        //setShouldCancel(false);
+        // setLastSeriesAndSetIndexes({
+        //   lastSeriesIndex: 0,
+        //   lastSetOfSeriesIndex: 0,
+        // });
       }
     }
   };
@@ -448,7 +462,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
                   }
                 }}
               >
-                Resume
+                {totalNumberOfSetsDone === 0 ? "Start" : "Resume"}
               </span>
             </IF>
             <IF

@@ -19,7 +19,7 @@ const getArrayOfSeries = cache(async () => {
       .map((series) => (totalNumberOfSets = series.sets.length))
       .reduce((partialSum, a) => partialSum + a, 0);
   }
-  console.log("getArrayOfSeries on the server");
+ // console.log("getArrayOfSeries on the server");
   return { arrayOfSeries, totalNumberOfSets };
 });
 

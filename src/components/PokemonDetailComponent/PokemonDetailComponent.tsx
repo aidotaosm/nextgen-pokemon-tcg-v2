@@ -4,7 +4,6 @@ import { PokemonDetailProps } from "../../models/GenericModels";
 import { IF } from "../UtilityComponents/IF";
 import { ExternalLinkComponent } from "../ExternalLinkComponent/ExternalLinkComponent";
 import { CopyToClipboardComponent } from "../UtilityComponents/CopyToClipboardComponent";
-import { useRouter } from "next/router";
 import { Helper } from "../../utils/helper";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
 import { logoBlurImage } from "@/base64Images/base64Images";

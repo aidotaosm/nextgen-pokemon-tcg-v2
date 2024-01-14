@@ -12,17 +12,6 @@ export const dynamicParams = true;
 export const generateStaticParams = async () => {
   const { arrayOfSeries, sets } = await getExpansions();
   let returnPaths: { setId: string }[] = [];
-  // let allSetIds: string[] = dynamicallyImportedAllCards.map(
-  //   (x: any) => x.set.id
-  // );
-  // let uniqueItems: string[] = Array.from(new Set(allSetIds));
-  // returnPaths = uniqueItems.map((x) => {
-  //   return {
-  //     params: {
-  //       setId: x,
-  //     },
-  //   };
-  // });
   arrayOfSeries.forEach((series) => {
     series.sets.forEach((set: any) => {
       if (set.id === SpecialSetNames.pop2) {
@@ -65,7 +54,7 @@ const getSetOnServer = cache(async (setId: string) => {
 });
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: Props<{ setId: string }>,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
@@ -98,7 +87,7 @@ export async function generateMetadata(
   };
 }
 
-const SetDetails = async ({ params }: Props) => {
+const SetDetails = async ({ params }: Props<{ setId: string }>) => {
   const cardsObject = await getSetOnServer(params.setId);
   if (!cardsObject?.data?.length) {
     notFound();

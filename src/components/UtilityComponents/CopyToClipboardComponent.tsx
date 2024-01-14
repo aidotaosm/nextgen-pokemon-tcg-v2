@@ -1,9 +1,9 @@
+'use client'
 import {
   Fragment,
   FunctionComponent,
   useContext,
   useEffect,
-  useState,
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
@@ -18,8 +18,7 @@ interface CopyToClipboardComponentProps {
 }
 export const CopyToClipboardComponent: FunctionComponent<
   CopyToClipboardComponentProps
-> = ({ copyText, children, classes, popOverId, card }) => {
-  const [isCopied, setIsCopied] = useState(false);
+> = ({ copyText, classes, popOverId, card }) => {
   const appContextValues = useContext(AppContext);
   useEffect(() => {
     let popoverInstance: Popover;
@@ -48,10 +47,6 @@ export const CopyToClipboardComponent: FunctionComponent<
     copyTextToClipboard(copyText)
       .then(() => {
         // If successful, update the isCopied state value
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 1500);
       })
       .catch((err) => {
         console.log(err);

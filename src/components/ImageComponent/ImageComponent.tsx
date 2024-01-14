@@ -1,3 +1,4 @@
+'use client'
 import { FunctionComponent, useEffect, useState } from "react";
 import Image from "next/image";
 import { IF } from "../UtilityComponents/IF";

@@ -1,8 +1,8 @@
-import { Fragment, FunctionComponent, useContext, useState } from "react";
+'use client'
+import { Fragment, FunctionComponent, useContext } from "react";
 import { defaultBlurImage } from "@/base64Images/base64Images";
 import { AppContext } from "../../contexts/AppContext";
 import { PokemonDetailProps } from "../../models/GenericModels";
-import { Helper } from "../../utils/helper";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
 import { PokemonDetailComponent } from "../PokemonDetailComponent/PokemonDetailComponent";
 import { IF } from "../UtilityComponents/IF";

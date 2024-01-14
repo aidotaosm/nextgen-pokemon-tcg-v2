@@ -36,7 +36,7 @@ export const AppContext = createContext<AppContextInterface>({
     bootstrap: null,
     offLineMode: false,
     globalSearchTerm: "",
-    sidebarCollapsed: false,
+    sidebarCollapsed: true,
   },
 });
 

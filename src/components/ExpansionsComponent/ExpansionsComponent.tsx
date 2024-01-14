@@ -16,8 +16,6 @@ import { AppContext } from "../../contexts/AppContext";
 import { SpecialSetNames } from "../../models/Enums";
 import { LocalSearchComponent } from "../LocalSearchComponent/LocalSearchComponent";
 import { PreloadComponent } from "../Preload/PreloadComponent";
-import { Helper } from "../../utils/helper";
-import { Vercel_DEFAULT_URL } from "../../constants/constants";
 import { AcordionToggleComponent } from "./AcordionToggleComponent";
 
 export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({

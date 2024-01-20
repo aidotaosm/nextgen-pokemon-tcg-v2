@@ -144,7 +144,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     const batchAndExecutePrefetchThenClearUrls = async (setIndex: number) => {
       setPrefetchingSets(setsWithCallUrls);
       let calls = setsWithCallUrls.map(async (set) => {
-        let randomNumber = Helper.randDelay(200, 1000);
+        let randomNumber = Helper.randDelay(500, 1500);
         await promiseWrappedPrefetch(set.callUrl, randomNumber);
         flushSync(() => {
           setShouldCancel((x) => {

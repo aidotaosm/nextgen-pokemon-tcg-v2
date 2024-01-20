@@ -10,6 +10,8 @@ import "@/css/fs-breakpoint-n.css";
 import "@/css/global.css";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { baseMetaData } from "@/data/base-metadata";
+import { Analytics } from "@vercel/analytics/react";
+
 config.autoAddCss = false;
 
 export const metadata: Metadata = baseMetaData;
@@ -25,6 +27,7 @@ export default function RootLayout({
         <AppProvider>
           <AppWrapper>{children}</AppWrapper>
         </AppProvider>
+        <Analytics />
       </body>
     </html>
   );

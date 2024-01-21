@@ -191,7 +191,6 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             if (fieldValue.length && isSearchPage) {
               let TypedFieldValue = fieldValue as string[];
               let setResult: any[] = [];
-              console.log(TypedFieldValue);
               TypedFieldValue.forEach((setId) => {
                 setResult = [
                   ...setResult,

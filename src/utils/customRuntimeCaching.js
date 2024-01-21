@@ -104,12 +104,25 @@ module.exports = [
       },
     },
   },
-
   {
-    urlPattern: /\?_rsc=\w{5}$/i,
+    urlPattern: /.*\?_rsc=\w{5}$/i,
     handler: "StaleWhileRevalidate",
     options: {
       cacheName: "rsc",
+      // plugins: [
+      //   // Custom plugin to delete previous cached responses with the same path
+      //   {
+      //     cacheWillUpdate: async ({ request, response }) => {
+      //       const cachedResponse = await caches.match(request);
+      //       if (
+      //         cachedResponse &&
+      //         cachedResponse.url.pathname === request.url.pathname
+      //       ) {
+      //         await caches.delete(request);
+      //       }
+      //     },
+      //   },
+      // ],
       expiration: {
         maxEntries: 1000,
         maxAgeSeconds: 24 * 60 * 60 * 30, // 24 hours

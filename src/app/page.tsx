@@ -7,7 +7,6 @@ export const revalidate = 60 * 60 * 24;
 
 const getTenRandomCards = cache(async () => {
   let tenRandomCards = [];
-  console.log("getAllCardsJSONFromFileBaseIPFS attempted");
   try {
     let allCardsResponse: any[] = await getAllCardsJSONFromFileBaseIPFS();
 
@@ -15,11 +14,9 @@ const getTenRandomCards = cache(async () => {
       let randomIndex = Helper.randDelay(0, allCardsResponse.length - 1);
       tenRandomCards.push(allCardsResponse[randomIndex]);
     }
-    console.log("getAllCardsJSONFromFileBaseIPFS success");
   } catch (e) {
     console.log(e, "getAllCardsJSONFromFileBaseIPFS error");
   }
-  console.log("getTenRandomCards");
   return { setCards: tenRandomCards };
 });
 

@@ -13,7 +13,6 @@ export const generateStaticParams = async () => {
 };
 const getCardOnServer = cache(async (cardId: string) => {
   const cardObject = await getCardById(cardId);
-  console.log(cardObject,'cardObject');
   return cardObject;
 });
 export async function generateMetadata(

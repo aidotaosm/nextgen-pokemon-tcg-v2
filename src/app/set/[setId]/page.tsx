@@ -20,7 +20,6 @@ export const generateStaticParams = async () => {
       returnPaths.push({ setId: set.id });
     });
   });
-  console.log(returnPaths);
   if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT == "Local") {
     returnPaths.splice(1, returnPaths.length - 1);
   }

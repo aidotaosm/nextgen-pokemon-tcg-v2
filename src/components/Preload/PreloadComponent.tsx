@@ -130,7 +130,6 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
         resolve(urlToPrefetch + " has been prefetched");
       }, callTime);
     });
-    console.log(retrunVal);
     return retrunVal;
   };
 

@@ -107,7 +107,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     };
   }, []);
   const triggerSearchPagePrefetch = async () => {
-    setSearchPageDownloaded("loading");
+    //setSearchPageDownloaded("loading");
     // router
     //   .prefetch("/search")
     //   .then((prefetchedData) => {

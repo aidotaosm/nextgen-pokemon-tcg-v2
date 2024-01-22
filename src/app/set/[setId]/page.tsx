@@ -20,7 +20,7 @@ export const generateStaticParams = async () => {
       returnPaths.push({ setId: set.id });
     });
   });
-  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT == "Local") {
+  if (process.env.NEXT_PUBLIC_APP_ENVIRONMENT == "local") {
     returnPaths.splice(1, returnPaths.length - 1);
   }
   // process.env.NODE_ENV

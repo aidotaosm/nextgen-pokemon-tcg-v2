@@ -105,7 +105,7 @@ module.exports = [
     },
   },
   {
-    urlPattern: /.*\?_rsc=\w{5}$/i,
+    urlPattern: /^.*\?_rsc=\w{5}$/i,
     handler: "StaleWhileRevalidate",
     options: {
       cacheName: "rsc",

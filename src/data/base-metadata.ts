@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const baseMetaData: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_ENVIRONMENT === "Local"
+    process.env.NEXT_PUBLIC_APP_ENVIRONMENT === "local"
       ? "http://localhost:3001"
       : Helper.getBaseDomainServerSide()
   ),

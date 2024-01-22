@@ -592,7 +592,8 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
           filterQuery
         : "");
     const fixedQuery = updatedQuery.replaceAll("?&", "?");
-    router.push(fixedQuery);
+    // router.push(fixedQuery);
+    window.history.pushState({}, "", fixedQuery);
   };
 
   const setSearchValueFunction = (

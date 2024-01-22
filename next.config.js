@@ -72,7 +72,7 @@ const customRuntimeCaching = require("./src/utils/customRuntimeCaching");
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
-  dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
+
   register: true,
   skipWaiting: true,
   extendDefaultRuntimeCaching: true,
@@ -84,7 +84,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   fallbacks: {
     image: "/images/Cardback.webp",
   },
-  cacheStartUrl: true,
+
   reloadOnOnline: true,
   publicExcludes: [
     "!noprecache/**/*",
@@ -95,6 +95,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     "!antd.min.css",
     "!images/Cardback.webp", // if we do not add this, this gets cached twice because of fallbacks: {image: "/images/Cardback.webp"} and breaks the SW
   ],
+  //dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
+  //cacheStartUrl: true,
   //   publicExcludes: ['!manifest.webmanifest', '!images/favicon-16x16.png', '!images/favicon-32x32.png', '!images/safari-pinned-tab.svg', '!images/android-chrome-192x192.png', '!images/android-chrome-512x512.png', '!images/apple-touch-icon.png', '!favicon.ico']
 });
 

@@ -112,16 +112,36 @@ module.exports = [
       cacheName: "rsc",
       plugins: [
         {
-          cacheWillUpdate: async ({ request, response }) => {
-            let openedCache = await caches.open("rsc");
-            let cacheKEys = await openedCache.keys();
-            const cachedResponse = cacheKEys.find((x) => {
-              if (x.url.split("?")[0] === request.url.split("?")[0]) {
-                return x;
-              }
-            });
-            const isCacheDeleted = await openedCache.delete(cachedResponse);
-            return response;
+          // cacheWillUpdate: async ({ request, response }) => {
+          //   console.log(request, "request");
+          //   console.log(response, "response");
+
+          //   // if (navigator.onLine) {
+          //   let openedCache = await caches.open("rsc");
+          //   let cacheKEys = await openedCache.keys();
+          //   let isDuplicate = false;
+          //   const cachedResponse = cacheKEys.find((x) => {
+          //     if (x.url === request.url) {
+          //       isDuplicate = true;
+          //       return x;
+          //     }
+          //     if (x.url.split("?")[0] === request.url.split("?")[0]) {
+          //       return x;
+          //     }
+          //   });
+          //   if (isDuplicate) {
+          //     console.log("skipped");
+          //     return null;
+          //   }
+          //   const isCacheDeleted = await openedCache.delete(cachedResponse);
+          //   console.log(isCacheDeleted, cachedResponse);
+          //   //  }
+          //   return response;
+          // },
+          cacheKeyWillBeUsed: async ({ request, response }) => {
+            const modifiedUrl = request.url.replace(/\?_rsc=\w{5}/, "");
+            console.log(modifiedUrl);
+            return modifiedUrl;
           },
         },
       ],

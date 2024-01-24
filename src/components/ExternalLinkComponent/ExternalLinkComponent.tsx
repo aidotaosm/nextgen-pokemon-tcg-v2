@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { faExternalLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "bootstrap";
@@ -35,6 +35,7 @@ export const ExternalLinkComponent: FunctionComponent<ExternalLinkProps> = ({
       data-bs-trigger="hover"
       id={toolTipId}
       data-bs-title={"Open external link to " + card.name}
+      //prefetch={typeof window === "undefined" ? false : navigator.onLine}
     >
       <FontAwesomeIcon
         className="cursor-pointer user-select-none"

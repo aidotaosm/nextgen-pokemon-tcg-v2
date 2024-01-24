@@ -262,27 +262,41 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
         <div className={"d-flex align-items-center row"}>
           <div className="col d-flex align-items-center">
             <IF condition={pathToRedirect || pathname != "/"}>
-              <span
+              <Link
+                aria-label={"Back to last visited page"}
+                href={
+                  typeof window === "undefined"
+                    ? "/"
+                    : navigator.onLine
+                    ? pathToRedirect || "/"
+                    : pathToRedirect
+                    ? pathToRedirect.split("?")[0]
+                    : "/"
+                }
                 data-bs-title={"Go back to last page."}
                 data-bs-toggle="tooltip"
                 data-bs-trigger="hover"
                 id={backButtonTooltipId}
+                style={{ color: "unset" }}
+                // prefetch={
+                //   typeof window === "undefined" ? false : navigator.onLine
+                // }
               >
                 <FontAwesomeIcon
                   className="cursor-pointer user-select-none me-3 fs-3"
                   icon={faArrowLeftLong}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(
-                      navigator.onLine
-                        ? pathToRedirect || "/"
-                        : pathToRedirect
-                        ? pathToRedirect.split("?")[0]
-                        : "/"
-                    );
-                  }}
+                  // onClick={(e) => {
+                  //   e.stopPropagation();
+                  //   router.push(
+                  //     navigator.onLine
+                  //       ? pathToRedirect || "/"
+                  //       : pathToRedirect
+                  //       ? pathToRedirect.split("?")[0]
+                  //       : "/"
+                  //   );
+                  // }}
                 />
-              </span>
+              </Link>
             </IF>
             <IF
               condition={
@@ -290,7 +304,13 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
                 pathname != "/search"
               }
             >
-              <Link href="/search" aria-label={"Search page"}>
+              <Link
+                href="/search"
+                aria-label={"Search page"}
+                // prefetch={
+                //   typeof window === "undefined" ? false : navigator.onLine
+                // }
+              >
                 <span
                   // onClick={(e) => e.stopPropagation()}
                   //it is causing sw to not send offline files
@@ -308,7 +328,13 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
             </IF>
           </div>
           <div className="col d-flex justify-content-center">
-            <Link href="/" className="d-block main-logo">
+            <Link
+              href="/"
+              className="d-block main-logo"
+              // prefetch={
+              //   typeof window === "undefined" ? false : navigator.onLine
+              // }
+            >
               <ImageComponent
                 src={pokemonLogo}
                 alt={"Pokemon logo"}
@@ -396,6 +422,9 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
                 data-bs-toggle="tooltip"
                 data-bs-trigger="hover"
                 id={githubTooltipId}
+                // prefetch={
+                //   typeof window === "undefined" ? false : navigator.onLine
+                // }
               >
                 Osama
               </Link>

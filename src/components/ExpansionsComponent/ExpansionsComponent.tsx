@@ -147,6 +147,11 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
                                 ? SpecialSetNames.poptwo
                                 : set.id)
                             }
+                            // prefetch={
+                            //   typeof window === "undefined"
+                            //     ? false
+                            //     : navigator.onLine
+                            // }
                           >
                             <>
                               <div className={styles["set-image"]}>

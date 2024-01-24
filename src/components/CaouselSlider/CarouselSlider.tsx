@@ -4,7 +4,6 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-
 import {
   ButtonBack,
   ButtonNext,
@@ -12,19 +11,14 @@ import {
   Slide,
   Slider,
 } from "pure-react-carousel";
-
 import { CarouselContext } from "pure-react-carousel";
-
 import useWindowSize from "../../hooks/windowSize";
 import Link from "next/link";
 import { ImageComponent } from "../ImageComponent/ImageComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBackspace,
   faChevronCircleLeft,
-  faCircleChevronLeft,
   faCircleChevronRight,
-  faForwardStep,
 } from "@fortawesome/free-solid-svg-icons";
 import { defaultBlurImage } from "@/base64Images/base64Images";
 interface CarouselSliderProps {
@@ -92,6 +86,9 @@ const CarouselSlider: FunctionComponent<CarouselSliderProps> = ({
               href={"/card/" + card.id}
               style={{ maxWidth: "25rem" }}
               className=""
+              // prefetch={
+              //   typeof window === "undefined" ? false : navigator.onLine
+              // }
             >
               <ImageComponent
                 src={card?.images?.small}

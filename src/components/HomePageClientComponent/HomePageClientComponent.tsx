@@ -16,7 +16,7 @@ const HomePageClientComponent: FunctionComponent<{ setCards: any[] }> = ({
   const [slideCount, setSlideCount] = useState(1);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselLoadingDone, setCarouselLoadingDone] = useState(true);
-  const { appState, updateGlobalSearchTerm } = useContext(AppContext);
+  const { updateGlobalSearchTerm } = useContext(AppContext);
   let router = useRouter();
   const setSearchValueFunction = (
     value: string,
@@ -49,6 +49,7 @@ const HomePageClientComponent: FunctionComponent<{ setCards: any[] }> = ({
         <Link
           href="/series"
           className="un-styled-anchor cursor-pointer col d-block"
+          //prefetch={typeof window === "undefined" ? false : navigator.onLine}
         >
           <div className="special-card-border smaller-radius">
             <div className=" d-lg-flex align-items-center flex-column flex-lg-row justify-content-center border-light-gray rounded special-card position-relative bg-default">

@@ -14,7 +14,10 @@ export const CardComponent: FunctionComponent<CardObjectProps> = ({
         className="d-flex justify-content-center align-items-center mb-4 position-relative"
         style={{ height: "5rem", minHeight: "5rem", overflow: "hidden" }}
       >
-        <Link href={"/set/" + cardObject.set.id} className="">
+        <Link
+          href={"/set/" + cardObject.set.id}
+          //prefetch={typeof window === "undefined" ? false : navigator.onLine}
+        >
           <ImageComponent
             src={cardObject.set?.images?.logo}
             alt={cardObject.set.name}
@@ -26,7 +29,10 @@ export const CardComponent: FunctionComponent<CardObjectProps> = ({
         </Link>
       </div>
       <h2 className="mb-4 h4 text-center">
-        <Link href={"/set/" + cardObject.set.id} className="">
+        <Link
+          href={"/set/" + cardObject.set.id}
+          //prefetch={typeof window === "undefined" ? false : navigator.onLine}
+        >
           {cardObject.set.name}
         </Link>
         {" set of "}

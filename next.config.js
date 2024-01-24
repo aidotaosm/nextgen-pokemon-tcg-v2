@@ -79,7 +79,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   workboxOptions: {
     maximumFileSizeToCacheInBytes: 50000000,
     runtimeCaching: [...customRuntimeCaching],
-    //ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^_rsc$/],
+    ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^_rsc$/],
     // exclude: [/media\/.*$/],
   },
   fallbacks: {

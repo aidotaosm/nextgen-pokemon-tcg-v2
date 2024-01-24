@@ -1,6 +1,7 @@
 "use strict";
 
 // Workbox RuntimeCaching config: https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.RuntimeCachingEntry
+
 module.exports = [
   {
     urlPattern: /^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,
@@ -109,20 +110,21 @@ module.exports = [
     handler: "StaleWhileRevalidate",
     options: {
       cacheName: "rsc",
-      // plugins: [
-      //   // Custom plugin to delete previous cached responses with the same path
-      //   {
-      //     cacheWillUpdate: async ({ request, response }) => {
-      //       const cachedResponse = await caches.match(request);
-      //       if (
-      //         cachedResponse &&
-      //         cachedResponse.url.pathname === request.url.pathname
-      //       ) {
-      //         await caches.delete(request);
-      //       }
-      //     },
-      //   },
-      // ],
+      plugins: [
+        {
+          cacheWillUpdate: async ({ request, response }) => {
+            let openedCache = await caches.open("rsc");
+            let cacheKEys = await openedCache.keys();
+            const cachedResponse = cacheKEys.find((x) => {
+              if (x.url.split("?")[0] === request.url.split("?")[0]) {
+                return x;
+              }
+            });
+            const isCacheDeleted = await openedCache.delete(cachedResponse);
+            return response;
+          },
+        },
+      ],
       expiration: {
         maxEntries: 1000,
         maxAgeSeconds: 24 * 60 * 60 * 30, // 24 hours

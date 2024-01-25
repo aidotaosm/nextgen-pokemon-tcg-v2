@@ -43,7 +43,7 @@ export const baseMetaData: Metadata = {
       },
     ],
   },
-  title: "NextGen Pokemon TCG V2",
+  title: "NextGen Pokemon TCG",
   description:
     "The Next Generation Pokemon cards database. Fastest Pokemon card search experience out there! And with offline support!",
   openGraph: {

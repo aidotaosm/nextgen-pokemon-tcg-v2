@@ -140,7 +140,7 @@ module.exports = [
           // },
           cacheKeyWillBeUsed: async ({ request, response }) => {
             const modifiedUrl = request.url.replace(/\?_rsc=\w{5}/, "");
-            console.log(modifiedUrl);
+            //console.log(modifiedUrl);
             return modifiedUrl;
           },
         },

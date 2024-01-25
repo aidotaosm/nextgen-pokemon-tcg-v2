@@ -11,6 +11,7 @@ import "@/css/global.css";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { baseMetaData } from "@/data/base-metadata";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 config.autoAddCss = false;
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <AppWrapper>{children}</AppWrapper>
         </AppProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

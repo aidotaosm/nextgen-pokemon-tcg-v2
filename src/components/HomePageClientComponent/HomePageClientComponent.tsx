@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CarouselProvider } from "pure-react-carousel";
 import { FunctionComponent, useContext, useState } from "react";
-import swsh125 from "../../internal-images/swsh125-preview-cards-1-169-en.jpg";
+import swsh125 from "../../internal-images/Paradox-Rift-PTCG.webp";
 
 const HomePageClientComponent: FunctionComponent<{ setCards: any[] }> = ({
   setCards,

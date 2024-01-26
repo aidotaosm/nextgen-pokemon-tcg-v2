@@ -98,7 +98,7 @@ const CarouselSlider: FunctionComponent<CarouselSliderProps> = ({
                 height={1024}
                 blurDataURL={defaultBlurImage}
                 className="h-100 w-100"
-                //lqImageUnOptimize={true}
+                lqImageUnOptimize={false}
                 lqEagerLoading={"eager"}
                 //hqEagerLoading={"lazy"}
               />

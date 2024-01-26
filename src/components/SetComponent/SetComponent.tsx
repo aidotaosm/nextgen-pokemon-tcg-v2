@@ -33,7 +33,7 @@ import { FilterFieldNames } from "../../models/Enums";
 import superTypes from "../../InternalJsons/AllSuperTypes.json";
 import { SortOptions, SortOrderOptions } from "../../data";
 import { Helper } from "../../utils/helper";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { SetOnLoadComponent } from "./SetOnLoadComponent";
 
 const SetComponent: FunctionComponent<CardsObjectProps> = ({
@@ -41,7 +41,6 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
   isSearchPage = false,
 }) => {
   const [formInstance] = Form.useForm();
-  const router = useRouter();
   const paths = useParams();
   const getCardsForServerSide = () => {
     let from = 0 * DEFAULT_PAGE_SIZE;

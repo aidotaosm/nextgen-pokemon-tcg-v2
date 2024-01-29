@@ -95,6 +95,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     "!images/expansions_image.jpg",
     "!antd.min.css",
     "!images/Cardback.webp", // if we do not add this, this gets cached twice because of fallbacks: {image: "/images/Cardback.webp"} and breaks the SW
+    "!images/screenshot1.png",
+    "!images/screenshot2.png",
   ],
   //dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
   //cacheStartUrl: true,

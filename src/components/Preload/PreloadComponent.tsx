@@ -32,6 +32,7 @@ import {
 } from "../../utils/networkCalls";
 import { IF } from "../UtilityComponents/IF";
 import { ToastComponent } from "../UtilityComponents/ToastComponent";
+import { triggerAllCardsPreCache } from "@/utils/prefetch-allcards";
 interface PreloadComponentProps {
   arrayOfSeries?: any[];
   totalNumberOfSets: number;
@@ -95,29 +96,37 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   useEffect(() => {
     const onToastShowHandler = async () => {
       triggerSearchPagePrefetch();
-      //await triggerPrefetch();
     };
     const myToastEl = document.getElementById(prefetchToastId) as HTMLElement;
     if (myToastEl) {
       myToastEl.addEventListener("shown.bs.toast", onToastShowHandler);
     }
-    triggerSearchPagePrefetch();
     return () => {
       myToastEl.removeEventListener("shown.bs.toast", onToastShowHandler);
     };
   }, []);
   const triggerSearchPagePrefetch = async () => {
-    //setSearchPageDownloaded("loading");
-    // router
-    //   .prefetch("/search")
-    //   .then((prefetchedData) => {
-    //     setSearchPageDownloaded("yes");
-    //   })
-    //   .catch((e) => {
-    //     setSearchPageDownloaded("no");
-    //   });
-    router.prefetch("/series");
-    setSearchPageDownloaded("yes");
+    setSearchPageDownloaded("loading");
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.ready
+        .then(async (x) => {
+          router.prefetch("/search");
+          //setSearchPageDownloaded("yes");
+          await triggerAllCardsPreCache(
+            () => {
+              setSearchPageDownloaded("yes");
+            },
+            () => {
+              setSearchPageDownloaded("no");
+            }
+          );
+        })
+        .catch((e) => {
+          setSearchPageDownloaded("no");
+        });
+    } else {
+      setSearchPageDownloaded("no");
+    }
   };
 
   const promiseWrappedPrefetch = async (

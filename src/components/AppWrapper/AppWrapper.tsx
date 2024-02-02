@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   FunctionComponent,
   Suspense,
@@ -31,7 +31,8 @@ import Link from "next/link";
 import { ToastComponent } from "../UtilityComponents/ToastComponent";
 import { Tooltip } from "bootstrap";
 import { BeckButtonHistoryComponent } from "./BeckButtonHistoryComponent";
-//declare let self: ServiceWorkerGlobalScope;
+//import { triggerAllCardsPreCache } from "@/utils/prefetch-allcards";
+// declare let self: ServiceWorkerGlobalScope;
 
 interface LocalAppInterface {
   darkMode: boolean;
@@ -47,7 +48,6 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
     updateOfflineMode,
     updateDarkMode,
   } = useContext(AppContext);
-  let router = useRouter();
   let pathname = usePathname();
   const [pathToRedirect, setPathToRedirect] = useState<string>("");
   const [listOfPaths, setListOfPaths] = useState<string[]>([]);
@@ -149,6 +149,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       new bootstrap.Toast(toastLiveExample).show();
     }
   };
+
   useEffect(() => {
     let localAppState: LocalAppInterface =
       Helper.getLocalStorageItem("appState");
@@ -198,6 +199,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
             // console.log(x);
             //x.pushManager.
             setServiceWorkerStatus("done");
+            //triggerAllCardsPreCache();
           })
           .catch((e) => {
             setServiceWorkerStatus("error");

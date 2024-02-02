@@ -47,6 +47,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [totalNumberOfSetsDone, setTotalNumberOfSetsDone] = useState<number>(0);
   const [shouldCancel, setShouldCancel] = useState<boolean>(true);
+  const [serviceWorkerIsReady, setServiceWorkerIsReady] =
+    useState<boolean>(false);
   const [lastSeriesAndSetIndexes, setLastSeriesAndSetIndexes] = useState({
     lastSeriesIndex: 0,
     lastSetOfSeriesIndex: 0,
@@ -101,6 +103,11 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     if (myToastEl) {
       myToastEl.addEventListener("shown.bs.toast", onToastShowHandler);
     }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.ready.then(async (x) => {
+        setServiceWorkerIsReady(true);
+      });
+    }
     return () => {
       myToastEl.removeEventListener("shown.bs.toast", onToastShowHandler);
     };
@@ -111,7 +118,6 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       navigator.serviceWorker.ready
         .then(async (x) => {
           router.prefetch("/search");
-          //setSearchPageDownloaded("yes");
           await triggerAllCardsPreCache(
             () => {
               setSearchPageDownloaded("yes");
@@ -326,7 +332,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     window.location.reload();
   };
   const handleToastClick = async () => {
-    if (navigator.onLine) {
+    if (navigator.onLine && serviceWorkerIsReady) {
       const toastLiveExample = document.getElementById(prefetchToastId);
       let bootStrapMasterClass = appState?.bootstrap;
       if (toastLiveExample && bootStrapMasterClass) {
@@ -338,14 +344,6 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
         }, 0);
 
         new bootStrapMasterClass.Toast(toastLiveExample).show();
-        //resetting all related states for new fetch session
-        //setPrefetchingSets([]);
-        //setTotalNumberOfSetsDone(0);
-        //setShouldCancel(false);
-        // setLastSeriesAndSetIndexes({
-        //   lastSeriesIndex: 0,
-        //   lastSetOfSeriesIndex: 0,
-        // });
       }
     }
   };

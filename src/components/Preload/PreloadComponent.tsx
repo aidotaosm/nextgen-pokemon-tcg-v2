@@ -199,64 +199,68 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       seriesIndex < setsBySeries.length;
       seriesIndex++
     ) {
-      setsBySeries[seriesIndex].prefetchStatus = "loading";
-      if (seriesIndex > 0) {
-        setsBySeries[seriesIndex - 1].prefetchStatus = "done";
-      }
-      setSetsBySeries([...setsBySeries]);
-      setLoop: for (
-        let setIndex = startingIndexOfTheLastPausedSetDownload;
-        setIndex < setsBySeries[seriesIndex].sets.length;
-        setIndex++
-      ) {
-        if ((setIndex + 1) % 5) {
-          setsWithCallUrls.push({
-            ...setsBySeries[seriesIndex].sets[setIndex],
-            callUrl:
-              "/set/" +
-              (setsBySeries[seriesIndex].sets[setIndex].id ==
-              SpecialSetNames.pop2
-                ? SpecialSetNames.poptwo
-                : setsBySeries[seriesIndex].sets[setIndex].id),
-          });
-          if (setsBySeries[seriesIndex].sets.length - 1 === setIndex) {
-            let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
-            if (res?.message === "manual abort") {
-              setPrefetchingSets([]);
-              lastIndex = seriesIndex;
-              setLastSeriesAndSetIndexes({
-                lastSeriesIndex:
-                  setsBySeries.length - 1 === seriesIndex
-                    ? seriesIndex
-                    : ++seriesIndex,
-                lastSetOfSeriesIndex: 0,
+      if (setsBySeries[seriesIndex].prefetchStatus !== "done") {
+        setsBySeries[seriesIndex].prefetchStatus = "loading";
+        if (seriesIndex > 0) {
+          setsBySeries[seriesIndex - 1].prefetchStatus = "done";
+        }
+        setSetsBySeries([...setsBySeries]);
+        setLoop: for (
+          let setIndex = startingIndexOfTheLastPausedSetDownload;
+          setIndex < setsBySeries[seriesIndex].sets.length;
+          setIndex++
+        ) {
+          if (setsBySeries[seriesIndex].sets[setIndex].done !== true) {
+            if ((setIndex + 1) % 5) {
+              setsWithCallUrls.push({
+                ...setsBySeries[seriesIndex].sets[setIndex],
+                callUrl:
+                  "/set/" +
+                  (setsBySeries[seriesIndex].sets[setIndex].id ==
+                  SpecialSetNames.pop2
+                    ? SpecialSetNames.poptwo
+                    : setsBySeries[seriesIndex].sets[setIndex].id),
               });
-              break seriesLoop;
+              if (setsBySeries[seriesIndex].sets.length - 1 === setIndex) {
+                let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
+                if (res?.message === "manual abort") {
+                  setPrefetchingSets([]);
+                  lastIndex = seriesIndex;
+                  setLastSeriesAndSetIndexes({
+                    lastSeriesIndex:
+                      setsBySeries.length - 1 === seriesIndex
+                        ? seriesIndex
+                        : ++seriesIndex,
+                    lastSetOfSeriesIndex: 0,
+                  });
+                  break seriesLoop;
+                }
+              }
+            } else {
+              setsWithCallUrls.push({
+                ...setsBySeries[seriesIndex].sets[setIndex],
+                callUrl:
+                  "/set/" +
+                  (setsBySeries[seriesIndex].sets[setIndex].id ==
+                  SpecialSetNames.pop2
+                    ? SpecialSetNames.poptwo
+                    : setsBySeries[seriesIndex].sets[setIndex].id),
+              });
+              let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
+              if (res?.message === "manual abort") {
+                setPrefetchingSets([]);
+                lastIndex = seriesIndex;
+                setLastSeriesAndSetIndexes({
+                  lastSeriesIndex: seriesIndex,
+                  lastSetOfSeriesIndex: ++setIndex,
+                });
+                break seriesLoop;
+              }
             }
           }
-        } else {
-          setsWithCallUrls.push({
-            ...setsBySeries[seriesIndex].sets[setIndex],
-            callUrl:
-              "/set/" +
-              (setsBySeries[seriesIndex].sets[setIndex].id ==
-              SpecialSetNames.pop2
-                ? SpecialSetNames.poptwo
-                : setsBySeries[seriesIndex].sets[setIndex].id),
-          });
-          let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
-          if (res?.message === "manual abort") {
-            setPrefetchingSets([]);
-            lastIndex = seriesIndex;
-            setLastSeriesAndSetIndexes({
-              lastSeriesIndex: seriesIndex,
-              lastSetOfSeriesIndex: ++setIndex,
-            });
-            break seriesLoop;
-          }
+          //resetting starting index since at last one set has past over the last download index.
+          startingIndexOfTheLastPausedSetDownload = 0;
         }
-        //resetting starting index since at last one set has past over the last download index.
-        startingIndexOfTheLastPausedSetDownload = 0;
       }
       lastIndex = seriesIndex;
     }

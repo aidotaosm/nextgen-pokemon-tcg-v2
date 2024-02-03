@@ -32,7 +32,10 @@ import {
 } from "../../utils/networkCalls";
 import { IF } from "../UtilityComponents/IF";
 import { ToastComponent } from "../UtilityComponents/ToastComponent";
-import { triggerAllCardsPreCache } from "@/utils/prefetch-allcards";
+import {
+  chechSetAndSearchPreCacheStatus,
+  triggerAllCardsPreCache,
+} from "@/utils/prefetch-allcards";
 interface PreloadComponentProps {
   arrayOfSeries?: any[];
   totalNumberOfSets: number;
@@ -106,6 +109,12 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     if (navigator.serviceWorker) {
       navigator.serviceWorker.ready.then(async (x) => {
         setServiceWorkerIsReady(true);
+        chechSetAndSearchPreCacheStatus(
+          setsBySeries,
+          setSearchPageDownloaded,
+          setTotalNumberOfSetsDone,
+          setSetsBySeries
+        );
       });
     }
     return () => {

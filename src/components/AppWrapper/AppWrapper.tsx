@@ -459,7 +459,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
         delay={30000}
         toastTitle={
           <div className="d-flex">
-            <span className="me-2">Optimize User Experience</span>
+            <span className="me-2">Optimized User Experience</span>
             <div className="text-center">
               {serviceWorkerStatus === "loading" ? (
                 <FontAwesomeIcon

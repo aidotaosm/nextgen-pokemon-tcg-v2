@@ -205,13 +205,17 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
           setsBySeries[seriesIndex - 1].prefetchStatus = "done";
         }
         setSetsBySeries([...setsBySeries]);
+        const isLastSeries = setsBySeries.length - 1 === seriesIndex;
         setLoop: for (
           let setIndex = startingIndexOfTheLastPausedSetDownload;
           setIndex < setsBySeries[seriesIndex].sets.length;
           setIndex++
         ) {
+          const isLastSetOfSeries =
+            setsBySeries[seriesIndex].sets.length - 1 === setIndex;
           if (setsBySeries[seriesIndex].sets[setIndex].done !== true) {
             if ((setIndex + 1) % 5) {
+              // pushing urls to be executed when we have 5 urls
               setsWithCallUrls.push({
                 ...setsBySeries[seriesIndex].sets[setIndex],
                 callUrl:
@@ -221,22 +225,21 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
                     ? SpecialSetNames.poptwo
                     : setsBySeries[seriesIndex].sets[setIndex].id),
               });
-              if (setsBySeries[seriesIndex].sets.length - 1 === setIndex) {
+              // executing prefetch since isLastSetOfSeries
+              if (isLastSetOfSeries) {
                 let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
                 if (res?.message === "manual abort") {
                   setPrefetchingSets([]);
                   lastIndex = seriesIndex;
                   setLastSeriesAndSetIndexes({
-                    lastSeriesIndex:
-                      setsBySeries.length - 1 === seriesIndex
-                        ? seriesIndex
-                        : ++seriesIndex,
+                    lastSeriesIndex: isLastSeries ? seriesIndex : ++seriesIndex,
                     lastSetOfSeriesIndex: 0,
                   });
                   break seriesLoop;
                 }
               }
             } else {
+              // executing prefetch since we have got 5 urls
               setsWithCallUrls.push({
                 ...setsBySeries[seriesIndex].sets[setIndex],
                 callUrl:
@@ -251,8 +254,11 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
                 setPrefetchingSets([]);
                 lastIndex = seriesIndex;
                 setLastSeriesAndSetIndexes({
-                  lastSeriesIndex: seriesIndex,
-                  lastSetOfSeriesIndex: ++setIndex,
+                  lastSeriesIndex:
+                    isLastSetOfSeries && !isLastSeries
+                      ? ++seriesIndex
+                      : seriesIndex,
+                  lastSetOfSeriesIndex: isLastSetOfSeries ? 0 : ++setIndex,
                 });
                 break seriesLoop;
               }

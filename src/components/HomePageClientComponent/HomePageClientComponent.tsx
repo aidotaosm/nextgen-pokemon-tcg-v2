@@ -8,10 +8,13 @@ import { useRouter } from "next/navigation";
 import { CarouselProvider } from "pure-react-carousel";
 import { FunctionComponent, useContext, useState } from "react";
 import swsh125 from "../../internal-images/Paradox-Rift-PTCG.webp";
+import { PreloadComponent } from "../Preload/PreloadComponent";
 
-const HomePageClientComponent: FunctionComponent<{ setCards: any[] }> = ({
-  setCards,
-}) => {
+const HomePageClientComponent: FunctionComponent<{
+  setCards: any[];
+  arrayOfSeries: any[];
+  totalNumberOfSets: number;
+}> = ({ setCards, arrayOfSeries, totalNumberOfSets }) => {
   const [searchValue, setSearchValue] = useState("");
   const [slideCount, setSlideCount] = useState(1);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -38,12 +41,18 @@ const HomePageClientComponent: FunctionComponent<{ setCards: any[] }> = ({
       </h2>
       <div className="row row-cols-1 row-cols-sm-2 mb-5">
         <div className=" d-flex align-items-center col mb-5 mb-sm-0">
-          <div className="w-100 me-0 me-lg-4">
-            <LocalSearchComponent
-              setSearchValueFunction={setSearchValueFunction}
-              initialPlaceHolder={"Global search e.g. "}
-              defaultSearchTerm={searchValue}
-            />
+          <div className="w-100 h-100 me-0 d-flex align-items-center flex-column flex-md-row  justify-content-around">
+            <div className="w-100 me-0 me-md-4 flex-md-grow-1 mb-4 mb-sm-0">
+              <LocalSearchComponent
+                setSearchValueFunction={setSearchValueFunction}
+                initialPlaceHolder={"Global search e.g. "}
+                defaultSearchTerm={searchValue}
+              />
+            </div>
+            <PreloadComponent
+              arrayOfSeries={arrayOfSeries}
+              totalNumberOfSets={totalNumberOfSets}
+            ></PreloadComponent>
           </div>
         </div>
         <Link

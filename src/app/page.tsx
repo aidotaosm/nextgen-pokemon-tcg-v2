@@ -1,6 +1,7 @@
 import HomePageClientComponent from "@/components/HomePageClientComponent/HomePageClientComponent";
 import { Helper } from "@/utils/helper";
 import { getAllCardsJSONFromFileBaseIPFS } from "@/utils/networkCalls";
+import { getArrayOfSeries } from "@/utils/seriesNetworkCall";
 import { cache } from "react";
 
 export const revalidate = 60 * 60 * 24;
@@ -21,7 +22,14 @@ const getTenRandomCards = cache(async () => {
 });
 
 const HomePage = async () => {
-  const { setCards } = await getTenRandomCards();
-  return <HomePageClientComponent setCards={setCards}></HomePageClientComponent>
+  const promiseResponse = await Promise.all([
+    getTenRandomCards(),
+    getArrayOfSeries(),
+  ]);
+  const { setCards } = promiseResponse[0];
+  const { arrayOfSeries, totalNumberOfSets } = promiseResponse[1];
+  return (
+    <HomePageClientComponent setCards={setCards} arrayOfSeries={arrayOfSeries}totalNumberOfSets={totalNumberOfSets}></HomePageClientComponent>
+  );
 };
 export default HomePage;

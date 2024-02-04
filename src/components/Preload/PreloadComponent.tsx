@@ -100,7 +100,9 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   }, [appState?.bootstrap, pathName]);
   useEffect(() => {
     const onToastShowHandler = async () => {
-      triggerSearchPagePrefetch();
+      if (navigator.onLine && serviceWorkerIsReady) {
+        triggerSearchPagePrefetch();
+      }
     };
     const myToastEl = document.getElementById(prefetchToastId) as HTMLElement;
     if (myToastEl) {
@@ -351,7 +353,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     window.location.reload();
   };
   const handleToastClick = async () => {
-    if (navigator.onLine && serviceWorkerIsReady) {
+    if (serviceWorkerIsReady) {
       const toastLiveExample = document.getElementById(prefetchToastId);
       let bootStrapMasterClass = appState?.bootstrap;
       if (toastLiveExample && bootStrapMasterClass) {
@@ -400,7 +402,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
           <div>
             <span className="me-2">Optimization Status</span>
             <span
-              className="cursor-pointer span-link"
+              className={
+                "cursor-pointer span-link " +
+                (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+              }
               onClick={() => {
                 clearCacheUnregisterSWARefresh();
               }}
@@ -441,7 +446,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               <div className="ms-2 fw-bold">Offline Global search</div>
             </div>
             <span
-              className="cursor-pointer span-link"
+              className={
+                "cursor-pointer span-link " +
+                (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+              }
               onClick={() => {
                 if (downloadAllCardsLoading) {
                   return;
@@ -477,7 +485,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               }
             >
               <span
-                className="cursor-pointer span-link"
+                className={
+                  "cursor-pointer span-link " +
+                  (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                }
                 onClick={async () => {
                   if (navigator.onLine) {
                     flushSync(() => {
@@ -496,7 +507,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               }
             >
               <span
-                className="cursor-pointer span-link"
+                className={
+                  "cursor-pointer span-link " +
+                  (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                }
                 onClick={() => {
                   if (navigator.onLine) {
                     setShouldCancel(true);

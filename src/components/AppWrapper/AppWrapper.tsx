@@ -260,7 +260,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
           shallowRouting
         />
       </Suspense>
-      <header className="container pt-3 pb-4">
+      <header className="container py-4">
         <div className={"d-flex align-items-center row"}>
           <div className="col d-flex align-items-center">
             <IF condition={pathToRedirect || pathname != "/"}>
@@ -410,7 +410,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
 
       <main className="flex-grow-1 d-flex">{children}</main>
 
-      <footer className="container pt-4 pb-3">
+      <footer className="container py-4">
         <div className="text-center  fs-6">
           <small className="d-flex flex-column">
             <span>

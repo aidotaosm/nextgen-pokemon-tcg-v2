@@ -4,6 +4,7 @@ import {
   faCheck,
   faDownload,
   faGear,
+  faPlay,
   faRecycle,
   faSpinner,
   faXmark,
@@ -100,9 +101,9 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   }, [appState?.bootstrap, pathName]);
   useEffect(() => {
     const onToastShowHandler = async () => {
-      if (navigator.onLine && serviceWorkerIsReady) {
-        triggerSearchPagePrefetch();
-      }
+      // if (navigator.onLine && serviceWorkerIsReady) {
+      //   triggerSearchPagePrefetch();
+      // }
     };
     const myToastEl = document.getElementById(prefetchToastId) as HTMLElement;
     if (myToastEl) {
@@ -404,7 +405,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
             <span
               className={
                 "cursor-pointer span-link " +
-                (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                ((typeof window !== "undefined" && !navigator.onLine) ||
+                !serviceWorkerIsReady
+                  ? "disabled"
+                  : "")
               }
               onClick={() => {
                 clearCacheUnregisterSWARefresh();
@@ -440,7 +444,17 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
                 ) : searchPageDownloaded == "yes" ? (
                   <FontAwesomeIcon icon={faCheck} className="text-success" />
                 ) : (
-                  <FontAwesomeIcon icon={faXmark} className="text-danger" />
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    className={
+                      "cursor-pointer span-link " +
+                      ((typeof window !== "undefined" && !navigator.onLine) ||
+                      !serviceWorkerIsReady
+                        ? "disabled"
+                        : "")
+                    }
+                    onClick={triggerSearchPagePrefetch}
+                  />
                 )}
               </div>
               <div className="ms-2 fw-bold">Offline Global search</div>
@@ -448,7 +462,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
             <span
               className={
                 "cursor-pointer span-link " +
-                (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                ((typeof window !== "undefined" && !navigator.onLine) ||
+                !serviceWorkerIsReady
+                  ? "disabled"
+                  : "")
               }
               onClick={() => {
                 if (downloadAllCardsLoading) {
@@ -487,7 +504,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               <span
                 className={
                   "cursor-pointer span-link " +
-                  (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                  ((typeof window !== "undefined" && !navigator.onLine) ||
+                  !serviceWorkerIsReady
+                    ? "disabled"
+                    : "")
                 }
                 onClick={async () => {
                   if (navigator.onLine) {
@@ -509,7 +529,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               <span
                 className={
                   "cursor-pointer span-link " +
-                  (typeof window !== 'undefined' && !navigator.onLine || !serviceWorkerIsReady ? "disabled" : "")
+                  ((typeof window !== "undefined" && !navigator.onLine) ||
+                  !serviceWorkerIsReady
+                    ? "disabled"
+                    : "")
                 }
                 onClick={() => {
                   if (navigator.onLine) {

@@ -33,16 +33,16 @@ const HomePageClientComponent: FunctionComponent<{
   };
 
   return (
-    <div className="container mt-4">
-      <h1 className="text-center h3">NextGen Pokemon TCG</h1>
-      <h2 className="text-center mb-5 text-muted h5">
+    <div className="container d-flex flex-column justify-content-center">
+      <h1 className="text-center h3 w-100">NextGen Pokemon TCG</h1>
+      <h2 className="text-center mb-4 mb-lg-5 text-muted h5 w-100">
         The Next Generation Pokemon cards database. Fastest Pokemon card search
         experience out there! And with offline support!
       </h2>
-      <div className="row row-cols-1 row-cols-sm-2 mb-5">
-        <div className=" d-flex align-items-center col mb-5 mb-sm-0">
-          <div className="w-100 h-100 me-0 d-flex align-items-center flex-column flex-md-row  justify-content-around">
-            <div className="w-100 me-0 me-md-4 flex-md-grow-1 mb-4 mb-sm-0">
+      <div className="row row-cols-1 row-cols-sm-2 mb-4 mb-lg-5 w-100">
+        <div className=" d-flex align-items-center col mb-4 mb-sm-0">
+          <div className="w-100 h-100 d-flex align-items-center flex-sm-column justify-content-center flex-md-row">
+            <div className="w-100 me-4 me-sm-0 me-md-4 flex-md-grow-1 mb-0 mb-sm-4 mb-md-0">
               <LocalSearchComponent
                 setSearchValueFunction={setSearchValueFunction}
                 initialPlaceHolder={"Global search e.g. "}
@@ -88,7 +88,7 @@ const HomePageClientComponent: FunctionComponent<{
           </div>
         </Link>
       </div>
-      <div className="">
+      <div className="w-100">
         <h3 className="mb-3 text-center h5">Today's Featured Cards!</h3>
         <div
           className={

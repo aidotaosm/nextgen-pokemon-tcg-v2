@@ -411,33 +411,34 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       <main className="flex-grow-1 d-flex">{children}</main>
 
       <footer className="container py-4">
-        <div className="text-center  fs-6">
-          <small className="d-flex flex-column">
-            <span>
-              The Next Generation Pokemon TCG database. By{" "}
-              <Link
-                href="https://github.com/aidotaosm"
-                target="_blank"
-                data-bs-title={
-                  "Click to visit this project in Github! And maybe give it a Start?"
-                }
-                data-bs-toggle="tooltip"
-                data-bs-trigger="hover"
-                id={githubTooltipId}
-                // prefetch={
-                //   typeof window === "undefined" ? false : navigator.onLine
-                // }
-              >
-                Osama
-              </Link>
-              .
-            </span>
-            <span className="mt-1">
-              This website is not produced, endorsed, supported, or affiliated
-              with Nintendo or The Pokémon Company.
-            </span>
-          </small>
-        </div>
+        <p
+          className="d-flex flex-column mb-0 align-items-center justify-content-around"
+          style={{ minHeight: "59px" }}
+        >
+          <span className="text-center">
+            The Next Generation Pokemon TCG database. By{" "}
+            <Link
+              href="https://github.com/aidotaosm"
+              target="_blank"
+              data-bs-title={
+                "Click to visit this project in Github! And maybe give it a Start?"
+              }
+              data-bs-toggle="tooltip"
+              data-bs-trigger="hover"
+              id={githubTooltipId}
+              // prefetch={
+              //   typeof window === "undefined" ? false : navigator.onLine
+              // }
+            >
+              Osama
+            </Link>
+            .
+          </span>
+          <span className="text-center mt-1 mt-lg-0">
+            This website is not produced, endorsed, supported, or affiliated
+            with Nintendo or The Pokémon Company.
+          </span>
+        </p>
       </footer>
 
       <span

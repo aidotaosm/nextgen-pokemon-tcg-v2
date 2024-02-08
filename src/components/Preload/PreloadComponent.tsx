@@ -203,7 +203,6 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       seriesIndex++
     ) {
       if (setsBySeries[seriesIndex].prefetchStatus !== "done") {
-        setsBySeries[seriesIndex].prefetchStatus = "loading";
         if (seriesIndex > 0) {
           setsBySeries[seriesIndex - 1].prefetchStatus = "done";
         }
@@ -269,6 +268,10 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
           }
           //resetting starting index since at last one set has past over the last download index.
           startingIndexOfTheLastPausedSetDownload = 0;
+        }
+      } else {
+        if (seriesIndex > 0) {
+          setsBySeries[seriesIndex - 1].prefetchStatus = "done";
         }
       }
       lastIndex = seriesIndex;

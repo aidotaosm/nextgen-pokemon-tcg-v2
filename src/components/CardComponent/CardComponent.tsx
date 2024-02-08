@@ -11,8 +11,8 @@ export const CardComponent: FunctionComponent<CardObjectProps> = ({
   return (
     <div className="container d-flex justify-content-center flex-column">
       <div
-        className="d-flex justify-content-center align-items-center mb-4 position-relative w-100"
-        style={{ height: "5rem", minHeight: "5rem", overflow: "hidden" }}
+        className="d-flex justify-content-center align-items-center mb-4 mb-md-5 position-relative w-100"
+        style={{ height: "6rem", overflow: "hidden" }}
       >
         <Link
           href={"/set/" + cardObject.set.id}
@@ -28,7 +28,7 @@ export const CardComponent: FunctionComponent<CardObjectProps> = ({
           />
         </Link>
       </div>
-      <h2 className="mb-4 h4 text-center w-100">
+      <h2 className="mb-4 mb-md-5 h4 text-center w-100">
         <Link
           href={"/set/" + cardObject.set.id}
           //prefetch={typeof window === "undefined" ? false : navigator.onLine}

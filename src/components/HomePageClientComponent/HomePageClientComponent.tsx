@@ -89,7 +89,7 @@ const HomePageClientComponent: FunctionComponent<{
         </Link>
       </div>
       <div className="w-100">
-        <h3 className="mb-3 text-center h5">Today's Featured Cards!</h3>
+        <h3 className="mb-4 text-center h4">Today's Featured Cards!</h3>
         <div
           className={
             "carousel-container " +

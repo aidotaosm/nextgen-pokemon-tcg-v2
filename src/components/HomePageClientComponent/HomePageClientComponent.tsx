@@ -34,7 +34,7 @@ const HomePageClientComponent: FunctionComponent<{
 
   return (
     <div className="container d-flex flex-column justify-content-center">
-      <h1 className="text-center h3 w-100">NextGen Pokemon TCG</h1>
+      <h1 className="text-center h3 w-100 mb-3">NextGen Pokemon TCG</h1>
       <h2 className="text-center mb-4 mb-lg-5 text-muted h5 w-100">
         The Next Generation Pokemon cards database. Fastest Pokemon card search
         experience out there! And with offline support!

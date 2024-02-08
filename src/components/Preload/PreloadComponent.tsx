@@ -205,8 +205,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       if (setsBySeries[seriesIndex].prefetchStatus !== "done") {
         if (seriesIndex > 0) {
           setsBySeries[seriesIndex - 1].prefetchStatus = "done";
+          setSetsBySeries([...setsBySeries]);
         }
-        setSetsBySeries([...setsBySeries]);
         const isLastSeries = setsBySeries.length - 1 === seriesIndex;
         setLoop: for (
           let setIndex = startingIndexOfTheLastPausedSetDownload;
@@ -272,6 +272,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       } else {
         if (seriesIndex > 0) {
           setsBySeries[seriesIndex - 1].prefetchStatus = "done";
+          setSetsBySeries([...setsBySeries]);
         }
       }
       lastIndex = seriesIndex;

@@ -20,7 +20,6 @@ import {
   useState,
 } from "react";
 import { flushSync } from "react-dom";
-import { DEFAULT_PAGE_SIZE } from "../../constants/constants";
 import { AppContext } from "../../contexts/AppContext";
 import { SpecialSetNames } from "../../models/Enums";
 import { Helper } from "../../utils/helper";
@@ -99,16 +98,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
       settingsTooltipInstance?.dispose();
     };
   }, [appState?.bootstrap, pathName]);
+
   useEffect(() => {
-    const onToastShowHandler = async () => {
-      // if (navigator.onLine && serviceWorkerIsReady) {
-      //   triggerSearchPagePrefetch();
-      // }
-    };
-    const myToastEl = document.getElementById(prefetchToastId) as HTMLElement;
-    if (myToastEl) {
-      myToastEl.addEventListener("shown.bs.toast", onToastShowHandler);
-    }
     if (navigator.serviceWorker) {
       navigator.serviceWorker.ready.then(async (x) => {
         setServiceWorkerIsReady(true);
@@ -120,10 +111,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
         );
       });
     }
-    return () => {
-      myToastEl.removeEventListener("shown.bs.toast", onToastShowHandler);
-    };
   }, []);
+
   const triggerSearchPagePrefetch = async () => {
     setSearchPageDownloaded("loading");
     if (navigator.serviceWorker) {

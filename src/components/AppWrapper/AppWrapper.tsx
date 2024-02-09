@@ -249,9 +249,6 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       }
       style={{ minHeight: "100vh" }}
     >
-      {/* <ProgressComponent
-        isAnimating={isNavigationAnimating}
-      ></ProgressComponent> */}
       <Suspense fallback={<></>}>
         <ProgressBar
           height="4px"
@@ -287,22 +284,11 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
                 <FontAwesomeIcon
                   className="cursor-pointer user-select-none me-3 fs-3"
                   icon={faArrowLeftLong}
-                  // onClick={(e) => {
-                  //   e.stopPropagation();
-                  //   router.push(
-                  //     navigator.onLine
-                  //       ? pathToRedirect || "/"
-                  //       : pathToRedirect
-                  //       ? pathToRedirect.split("?")[0]
-                  //       : "/"
-                  //   );
-                  // }}
                 />
               </Link>
             </IF>
             <IF
               condition={
-                // pathname != "/" &&pathname != "/series" &&
                 pathname != "/search"
               }
             >

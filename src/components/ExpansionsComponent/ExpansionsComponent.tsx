@@ -82,7 +82,7 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
               defaultSearchTerm={searchValue}
             />
           </div>
-          <div className="ms-0 ms-md-4 d-flex justify-content-center justify-content-md-end">
+          <div className="ms-0 ms-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
             <h1 className="me-4 mb-0 h4">All Pokemon TCG Expansions</h1>
             <PreloadComponent
               arrayOfSeries={arrayOfSeries}

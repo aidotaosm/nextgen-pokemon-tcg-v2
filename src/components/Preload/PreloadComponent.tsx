@@ -375,7 +375,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
         <FontAwesomeIcon
           icon={faGear}
           onClick={handleToastClick}
-          className="cursor-pointer fs-3"
+          className="cursor-pointer fs-4"
           spin={
             totalNumberOfSetsDone === totalNumberOfSets ||
             searchPageDownloaded === "yes"

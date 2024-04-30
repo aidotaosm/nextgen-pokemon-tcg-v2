@@ -27,7 +27,7 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
   const cardClicked = (card: any) => {
     setSelectedCard(card);
   };
-
+  console.log("ListViewComponent rendered");
   const handleModalClose = useCallback((e: Event) => {
     let arrayOFCarouselItems = [
       ...(document.getElementsByClassName("carousel-item") as any),
@@ -140,8 +140,8 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
         id="list-view-card-modal"
         primaryClasses="modal-xl vertical-align-modal"
         secondaryClasses="transparent-modal"
-        handleModalClose={handleModalClose}
-        modalCloseButton={modalCloseButton}
+        // handleModalClose={handleModalClose}
+        // modalCloseButton={modalCloseButton}
       >
         {MemoizedCarouselComponent}
       </MemoizedModalComponent>

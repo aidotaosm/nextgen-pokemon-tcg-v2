@@ -58,7 +58,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // fetch data
   const cardsObject = await getSetOnServer(params.setId);
-  const title = cardsObject?.data[0].set.name;
+  const title = cardsObject?.data?.[0].set.name;
   const description =
     title + " set from the " + cardsObject?.data?.[0]?.set?.series + " series";
 
@@ -68,7 +68,7 @@ export async function generateMetadata(
     openGraph: {
       title: title,
       description: description,
-      images: [{ url: cardsObject?.data[0].set?.images?.logo }],
+      images: [{ url: cardsObject?.data?.[0].set?.images?.logo }],
       url:
         Helper.getBaseDomainServerSide() +
         "set/" +
@@ -80,7 +80,7 @@ export async function generateMetadata(
       title: title,
       description: description,
       images: {
-        url: cardsObject?.data[0].set?.images?.logo,
+        url: cardsObject?.data?.[0].set?.images?.logo,
       },
     },
   };

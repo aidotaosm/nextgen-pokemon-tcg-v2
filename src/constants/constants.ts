@@ -8,8 +8,9 @@ export const SuperTypes = {
   Pokemon: "Pokémon",
 };
 //export const Netlify_DEFAULT_URL = "https://pokemon-tcg-osm.netlify.app/";
-export const Netlify_DEFAULT_URL = "https://www.nextgen-pokemon-tcg.pro/";
-export const Vercel_DEFAULT_URL = "https://www.nextgen-pokemon-tcg.pro/";
+export const Netlify_DEFAULT_URL = "https://nextgen-pokemon-tcg.vercel.app/";
+//export const Vercel_DEFAULT_URL = "https://nextgen-pokemon-tcg.vercel.app/";
+export const Vercel_DEFAULT_URL = "https://nextgen-pokemon-tcg.vercel.app/";
 export const APP_PRIMARY_URL = "www.nextgen-pokemon-tcg";
 export const VERCEL_PRIMARY_HOST = "pro";
 export const FILEBASE_ALLCARDS_JSON_URL =

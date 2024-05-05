@@ -15,7 +15,7 @@ export const APP_PRIMARY_URL = "www.nextgen-pokemon-tcg";
 export const VERCEL_PRIMARY_HOST = "pro";
 export const FILEBASE_ALLCARDS_JSON_URL =
   "https://nextgen-pokemon-tcg.s3.filebase.com/AllCards.json";
-export const allCardsIPFSKey = "QmZFDbCt9UVKNSAvxYNX8trgTGA2Z1ecycapEX9f8sCGAV";
+export const allCardsIPFSKey = "QmeA5PgNMrZ3hMfmema4by68sLGynrgFQ3VYjYDutJKJzU";
 export const IPFS_ALLCARDS_JSON_URL =
   "https://ipfs.filebase.io/ipfs/" + allCardsIPFSKey;
 export const random_pokemon_names = [

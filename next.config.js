@@ -110,7 +110,7 @@ module.exports = withPWA({
     remotePatterns: [{ protocol: "https", hostname: "images.pokemontcg.io" }],
     minimumCacheTTL: 60 * 60 * 24 * 30 * 12,
   },
-  staticPageGenerationTimeout: 1000,
+  staticPageGenerationTimeout: 60,
   compiler: {
     removeConsole:
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== "local" &&

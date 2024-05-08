@@ -74,7 +74,7 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
         ))}
       </CarouselComponent>
     );
-  }, [selectedCard]);
+  }, [selectedCard, setCards]);
   return (
     <Fragment>
       <div className="list-view-wrapper">
@@ -140,8 +140,8 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
         id="list-view-card-modal"
         primaryClasses="modal-xl vertical-align-modal"
         secondaryClasses="transparent-modal"
-        // handleModalClose={handleModalClose}
-        // modalCloseButton={modalCloseButton}
+        handleModalClose={handleModalClose}
+        modalCloseButton={modalCloseButton}
       >
         {MemoizedCarouselComponent}
       </MemoizedModalComponent>

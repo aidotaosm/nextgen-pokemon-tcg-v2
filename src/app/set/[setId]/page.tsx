@@ -7,7 +7,7 @@ import { getAllSetCards, getExpansions } from "@/utils/networkCalls";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-export let revalidate = 60 * 60 * 24;
+export const revalidate = 86400; // 60 * 60 * 24
 export const dynamicParams = true;
 export const generateStaticParams = async () => {
   const { arrayOfSeries, sets } = await getExpansions();
@@ -57,7 +57,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
-  const cardsObject = await getSetOnServer(params.setId);
+  const { setId } = await params;
+  const cardsObject = await getSetOnServer(setId);
   const title = cardsObject?.data?.[0].set.name;
   const description =
     title + " set from the " + cardsObject?.data?.[0]?.set?.series + " series";
@@ -87,7 +88,8 @@ export async function generateMetadata(
 }
 
 const SetDetails = async ({ params }: Props<{ setId: string }>) => {
-  const cardsObject = await getSetOnServer(params.setId);
+  const { setId } = await params;
+  const cardsObject = await getSetOnServer(setId);
   if (!cardsObject?.data?.length) {
     notFound();
   }

@@ -4,7 +4,7 @@ import { getExpansions } from "@/utils/networkCalls";
 import { getArrayOfSeries } from "@/utils/seriesNetworkCall";
 import { Metadata } from "next";
 import { Fragment, FunctionComponent, cache } from "react";
-export const revalidate = 60 * 60;
+export const revalidate = 3600; // 60 * 60
 export const metadata: Metadata = seriesMetaData;
 
 const Series: FunctionComponent = async () => {

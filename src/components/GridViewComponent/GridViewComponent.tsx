@@ -20,7 +20,7 @@ export const GridViewComponent: FunctionComponent<SetCardsProps> = ({
   setCards,
 }) => {
   const [selectedCard, setSelectedCard] = useState<any>({});
-  const modalCloseButton = useRef<any>();
+  const modalCloseButton = useRef<any>(null);
   const { appState } = useContext(AppContext);
   const handleModalClose = useCallback((e: Event) => {
     setSelectedCard(null);

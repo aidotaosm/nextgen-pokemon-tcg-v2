@@ -23,7 +23,7 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
 }) => {
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const { appState } = useContext(AppContext);
-  const modalCloseButton = useRef<any>();
+  const modalCloseButton = useRef<any>(null);
   const cardClicked = (card: any) => {
     setSelectedCard(card);
   };

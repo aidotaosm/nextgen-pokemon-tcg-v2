@@ -1,10 +1,10 @@
-import { Fragment, FunctionComponent, ReactNode } from "react";
+import { Fragment, FunctionComponent, ReactElement, ReactNode } from "react";
 
 interface ToastProps {
   autoHide: boolean;
   id: string;
   toastTitle: ReactNode;
-  children: JSX.Element;
+  children: ReactElement;
   toastPosition?: "top-0 end-0" | "bottom-0 end-0";
   delay?: number;
 }

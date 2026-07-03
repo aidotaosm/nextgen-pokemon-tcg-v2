@@ -1,32 +1,32 @@
 import { FormInstance } from "antd";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export class BasicProps {
   children?: ReactNode;
   qry?: any;
 }
 export class CardsObjectProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   cardsObject?: any;
   isSearchPage?: boolean;
 }
 export class CardObjectProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   cardObject?: any;
 }
 
 export class SetCardsProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   setCards?: any;
 }
 
 export interface SeriesArrayProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   arrayOfSeries?: any[];
   totalNumberOfSets: number;
 }
 export interface PokemonDetailProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   card?: any;
   classes?: string;
   detailsClasses?: string;
@@ -36,7 +36,7 @@ export interface PokemonDetailProps {
   imageClasses?: string;
 }
 export interface CarouselProps {
-  children?: JSX.Element;
+  children?: ReactElement;
   classes?: string;
   isLandingPage?: boolean;
 }
@@ -58,7 +58,7 @@ export interface ExternalLinkProps {
 }
 export interface ModalProps {
   primaryClasses?: string;
-  children?: JSX.Element;
+  children?: ReactElement;
   secondaryClasses?: string;
   id?: string;
   handleModalClose?: (e: any) => void;
@@ -71,5 +71,5 @@ export interface ModalProps {
   handleOkButtonPress?: (e: any) => void;
 }
 export type Props<T> = {
-  params: T;
+  params: Promise<T>;
 };

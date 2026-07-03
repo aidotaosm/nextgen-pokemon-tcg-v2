@@ -39,7 +39,7 @@ export const PagingComponent: FunctionComponent<PagingComponentProps> = ({
   const [numberOfElements, setNumberOfElements] = useState<number>(
     paramNumberOfElements
   );
-  const inputElementRef = useRef<any>();
+  const inputElementRef = useRef<any>(null);
 
   const cardsPagingOnClick = (newPageIndex: number) => {
     if (newPageIndex != pageIndex && !isLoading && !disabled) {

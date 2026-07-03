@@ -4,7 +4,7 @@ import { getAllCardsJSONFromFileBaseIPFS } from "@/utils/networkCalls";
 import { getArrayOfSeries } from "@/utils/seriesNetworkCall";
 import { cache } from "react";
 
-export const revalidate = 60 * 60 * 24;
+export const revalidate = 86400; // 60 * 60 * 24
 
 const getTenRandomCards = cache(async () => {
   let tenRandomCards = [];

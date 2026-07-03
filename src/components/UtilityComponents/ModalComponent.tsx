@@ -16,12 +16,12 @@ const ModalComponent: FunctionComponent<ModalProps> = ({
 }) => {
   console.log("modal component rendered");
   useEffect(() => {
-    let modal = document.getElementById(id);
+    const modal = document.getElementById(id);
     modal?.addEventListener("hidden.bs.modal", handleModalClose);
     return () => {
       modal?.removeEventListener("hidden.bs.modal", handleModalClose);
-      let bodyElement = document.getElementsByTagName("body")[0] as HTMLElement;
-      let modalBackdrop = document.getElementsByClassName(
+      const bodyElement = document.getElementsByTagName("body")[0] as HTMLElement;
+      const modalBackdrop = document.getElementsByClassName(
         "modal-backdrop"
       )[0] as HTMLElement;
       if (modalBackdrop && bodyElement) {

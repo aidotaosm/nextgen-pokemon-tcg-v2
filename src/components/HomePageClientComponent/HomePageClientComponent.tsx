@@ -20,7 +20,7 @@ const HomePageClientComponent: FunctionComponent<{
   const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselLoadingDone, setCarouselLoadingDone] = useState(true);
   const { updateGlobalSearchTerm } = useContext(AppContext);
-  let router = useRouter();
+  const router = useRouter();
   const setSearchValueFunction = (
     value: string,
     eventType: "onChange" | "submit"

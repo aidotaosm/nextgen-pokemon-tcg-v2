@@ -108,7 +108,7 @@ interface SyncEvent extends ExtendableEvent {
 
 interface ExtendableMessageEvent extends ExtendableEvent {
   data: any;
-  source: Client | Object;
+  source: Client | object;
 }
 
 // ServiceWorkerGlobalScope

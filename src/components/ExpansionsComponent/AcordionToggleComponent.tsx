@@ -12,7 +12,7 @@ export const AcordionToggleComponent = ({
 }) => {
   const { appState } = useContext(AppContext);
   const queryParams = useSearchParams();
-  let router = useRouter();
+  const router = useRouter();
   useEffect(() => {
     // let arrayOfSets:any[] = [];
     // arrayOfSeries.forEach((x: any) => { arrayOfSets.push(...x.sets) });
@@ -25,8 +25,8 @@ export const AcordionToggleComponent = ({
     //   "text/plain"
     // );
     if (appState?.bootstrap) {
-      let selectedSeriesId = queryParams?.get("opened-series");
-      let parentOfAccordionToOpen = document.getElementById(
+      const selectedSeriesId = queryParams?.get("opened-series");
+      const parentOfAccordionToOpen = document.getElementById(
         selectedSeriesId || ""
       );
       if (parentOfAccordionToOpen && selectedSeriesId !== setsBySeries[0].id) {

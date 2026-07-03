@@ -7,12 +7,12 @@ import { cache } from "react";
 export const revalidate = 86400; // 60 * 60 * 24
 
 const getTenRandomCards = cache(async () => {
-  let tenRandomCards = [];
+  const tenRandomCards = [];
   try {
-    let allCardsResponse: any[] = await getAllCardsJSONFromFileBaseIPFS();
+    const allCardsResponse: any[] = await getAllCardsJSONFromFileBaseIPFS();
 
     for (let i = 0; i < 10; i++) {
-      let randomIndex = Helper.randDelay(0, allCardsResponse.length - 1);
+      const randomIndex = Helper.randDelay(0, allCardsResponse.length - 1);
       tenRandomCards.push(allCardsResponse[randomIndex]);
     }
   } catch (e) {

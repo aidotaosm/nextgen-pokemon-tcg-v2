@@ -64,7 +64,7 @@ export class Helper {
       typeof window !== "undefined" && window.location.host
         ? window.location.host
         : "";
-    let primaryHost = host.replace(APP_PRIMARY_URL + ".", "");
+    const primaryHost = host.replace(APP_PRIMARY_URL + ".", "");
     return primaryHost;
   }
 
@@ -97,7 +97,7 @@ export class Helper {
     link.remove();
   };
   static randDelay = (min: number, max: number) => {
-    let delayValue = Math.floor(Math.random() * (max - min + 1) + min);
+    const delayValue = Math.floor(Math.random() * (max - min + 1) + min);
     return delayValue;
   };
   static generateSiteMap = (list: any[], locPrefix: string) => {

@@ -43,8 +43,8 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
   const [formInstance] = Form.useForm();
   const paths = useParams();
   const getCardsForServerSide = () => {
-    let from = 0 * DEFAULT_PAGE_SIZE;
-    let to = (0 + 1) * DEFAULT_PAGE_SIZE;
+    const from = 0 * DEFAULT_PAGE_SIZE;
+    const to = (0 + 1) * DEFAULT_PAGE_SIZE;
     let changedSetOfCards: any[] | null = null;
     if (!isSearchPage) {
       changedSetOfCards = cardsObject?.data.slice(from, to);
@@ -73,7 +73,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
   };
 
   useEffect(() => {
-    let bootStrapMasterClass = appState?.bootstrap;
+    const bootStrapMasterClass = appState?.bootstrap;
     const filterButtonTrigger = document.getElementById(
       filterButtonTooltipId
     ) as any;
@@ -102,11 +102,11 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
     newPageIndex: number,
     instantFilterValues?: any
   ) => {
-    let tempSearchValue: string =
+    const tempSearchValue: string =
       paramSearchValue === "" || paramSearchValue
         ? paramSearchValue
         : searchValue;
-    let tempTextSearchValue: string =
+    const tempTextSearchValue: string =
       textSearchValue === "" || textSearchValue
         ? textSearchValue
         : formInstance.getFieldsValue()?.[FilterFieldNames.textSearch];
@@ -123,7 +123,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
         switch (fieldName) {
           case FilterFieldNames.energyType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.forEach((energy) => {
                 tempChangedCards = tempChangedCards.filter((card: any) => {
                   return (
@@ -135,7 +135,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.weakness:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.forEach((weakness) => {
                 tempChangedCards = tempChangedCards.filter((card: any) => {
                   return (
@@ -150,7 +150,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.resistance:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.forEach((resistance) => {
                 tempChangedCards = tempChangedCards.filter((card: any) => {
                   return (
@@ -167,7 +167,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.regulationMarks:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               let regulationMarks: any[] = [];
               TypedFieldValue.forEach((regulationMark) => {
                 regulationMarks = [
@@ -188,7 +188,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.set:
             if (fieldValue.length && isSearchPage) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               let setResult: any[] = [];
               TypedFieldValue.forEach((setId) => {
                 setResult = [
@@ -206,7 +206,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.textSearch:
             if (fieldValue) {
-              let TypedFieldValue = tempTextSearchValue.toLowerCase() as string;
+              const TypedFieldValue = tempTextSearchValue.toLowerCase() as string;
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
                   card.attacks?.find(
@@ -228,7 +228,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.subType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               let subTypeResult: any[] = [];
               TypedFieldValue.forEach((subtype) => {
                 subTypeResult = [
@@ -249,7 +249,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.rarity:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               let subTypeResult: any[] = [];
               TypedFieldValue.forEach((rarity) => {
                 subTypeResult = [
@@ -267,7 +267,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.hpRange:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as number[];
+              const TypedFieldValue = fieldValue as number[];
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
                   (card.hp &&
@@ -280,7 +280,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.retreatCost:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as number[];
+              const TypedFieldValue = fieldValue as number[];
               tempChangedCards = tempChangedCards.filter((card: any) => {
                 return (
                   (card.convertedRetreatCost &&
@@ -298,7 +298,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.cardType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               let cardTypeResult: any[] = [];
               TypedFieldValue.forEach((cardType) => {
                 cardTypeResult = [
@@ -313,7 +313,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.sortLevelOne:
             if (fieldValue) {
-              let TypedFieldValue = fieldValue as keyof typeof SortOptions;
+              const TypedFieldValue = fieldValue as keyof typeof SortOptions;
               if (TypedFieldValue === "sortByDexNumber") {
                 tempChangedCards.sort(
                   (firstColumn, secondColumn) =>
@@ -363,7 +363,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
             break;
           case FilterFieldNames.sortLevelOneOrder:
             if (fieldValue) {
-              let TypedFieldValue = fieldValue as keyof typeof SortOrderOptions;
+              const TypedFieldValue = fieldValue as keyof typeof SortOrderOptions;
               if (TypedFieldValue === "asc") {
                 // tempChangedCards.reverse();
               } else if (TypedFieldValue === "desc") {
@@ -374,8 +374,8 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
         }
       }
     });
-    let from = newPageIndex * DEFAULT_PAGE_SIZE;
-    let to = (newPageIndex + 1) * DEFAULT_PAGE_SIZE;
+    const from = newPageIndex * DEFAULT_PAGE_SIZE;
+    const to = (newPageIndex + 1) * DEFAULT_PAGE_SIZE;
     //cards of the day
     // Helper.saveTemplateAsFile(
     //   "CardsOfTheDay.json",
@@ -412,11 +412,11 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
       try {
         // if (!appState.darkMode && navigator.onLine) {
         if (false) {
-          let tempSearchValue: string | undefined =
+          const tempSearchValue: string | undefined =
             paramSearchValue === "" || paramSearchValue
               ? paramSearchValue
               : searchValue;
-          let cardsParentObject = await getCardsFromNextServer(
+          const cardsParentObject = await getCardsFromNextServer(
             newPageIndex,
             tempSearchValue
           );
@@ -454,7 +454,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
           //     }
           //   }
           // );
-          let allCardsFromCache = allCardsResponse || allCardsFromNetwork;
+          const allCardsFromCache = allCardsResponse || allCardsFromNetwork;
           handleSearchAndFilter(
             paramSearchValue,
             textSearchValue,
@@ -492,89 +492,89 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
         switch (fieldName) {
           case FilterFieldNames.energyType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.weakness:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.resistance:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.regulationMarks:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.set:
             if (fieldValue.length && isSearchPage) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.subType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.rarity:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.hpRange:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as number[];
+              const TypedFieldValue = fieldValue as number[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.retreatCost:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as number[];
+              const TypedFieldValue = fieldValue as number[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.cardType:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string[];
+              const TypedFieldValue = fieldValue as string[];
               TypedFieldValue.join(",");
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.textSearch:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string;
+              const TypedFieldValue = fieldValue as string;
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.sortLevelOne:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string;
+              const TypedFieldValue = fieldValue as string;
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
           case FilterFieldNames.sortLevelOneOrder:
             if (fieldValue.length) {
-              let TypedFieldValue = fieldValue as string;
+              const TypedFieldValue = fieldValue as string;
               filterQuery += "&" + fieldName + "=" + TypedFieldValue;
             }
             break;
@@ -582,7 +582,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
       }
     });
 
-    let updatedQuery =
+    const updatedQuery =
       (isSearchPage ? "/search" : "/set/" + paths?.setId) +
       (newPageIndex || searchValue || filterQuery
         ? "?" +
@@ -615,7 +615,7 @@ const SetComponent: FunctionComponent<CardsObjectProps> = ({
     pageChanged(0, undefined, textSearchValue);
   };
   const hideAllTollTips = () => {
-    let bootStrapMasterClass = appState?.bootstrap;
+    const bootStrapMasterClass = appState?.bootstrap;
     if (bootStrapMasterClass) {
       const filterButtonTooltipInstance: Tooltip =
         bootStrapMasterClass.Tooltip.getInstance("#" + filterButtonTooltipId);

@@ -9,8 +9,8 @@ export default async function handler(
 ) {
   //let parsedAllCards = allCardsJson as any[];
   let parsedAllCards: any[] = [];
-  let requestedPageIndex = req.query.page;
-  let requestedSearchValue = req.query.search as string;
+  const requestedPageIndex = req.query.page;
+  const requestedSearchValue = req.query.search as string;
   let returnedPageOfCards: any[] = [];
   if (requestedSearchValue && typeof requestedSearchValue === "string") {
     parsedAllCards = parsedAllCards.filter((item: any) => {
@@ -25,8 +25,8 @@ export default async function handler(
     !isNaN(parseFloat(requestedPageIndex.toString())) &&
     parsedAllCards.length
   ) {
-    let from = +requestedPageIndex * DEFAULT_PAGE_SIZE;
-    let to = (+requestedPageIndex + 1) * DEFAULT_PAGE_SIZE;
+    const from = +requestedPageIndex * DEFAULT_PAGE_SIZE;
+    const to = (+requestedPageIndex + 1) * DEFAULT_PAGE_SIZE;
     returnedPageOfCards = parsedAllCards.slice(from, to);
   } else {
     returnedPageOfCards = parsedAllCards.slice(0, DEFAULT_PAGE_SIZE);

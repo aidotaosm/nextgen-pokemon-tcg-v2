@@ -16,7 +16,7 @@ export const ExternalLinkComponent: FunctionComponent<ExternalLinkProps> = ({
   const appContextValues = useContext(AppContext);
   useEffect(() => {
     let tooltipTriggerInstance: Tooltip;
-    let bootStrapMasterClass = appContextValues?.appState?.bootstrap;
+    const bootStrapMasterClass = appContextValues?.appState?.bootstrap;
     const tooltipTrigger = document.getElementById(toolTipId) as any;
     if (bootStrapMasterClass && tooltipTrigger) {
       tooltipTriggerInstance = new bootStrapMasterClass.Tooltip(tooltipTrigger);

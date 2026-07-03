@@ -11,7 +11,9 @@
     "dev": "env-cmd -f .env.local next dev -p 3001",
     "build": "env-cmd -f .env.production next build",
     "build:local": "env-cmd -f .env.local next build",
-    "start": "next start -p 3001"
+    "start": "next start -p 3001",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.3.0",
@@ -33,12 +35,16 @@
     "sharp": "^0.35.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@serwist/turbopack": "9.5.11",
     "@types/bootstrap": "^5.2.11",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "^1.0.0",
     "esbuild": "^0.28.1",
+    "eslint": "^9",
+    "eslint-config-next": "^16.2.10",
     "serwist": "9.5.11",
     "typescript": "^6.0.3"
   },

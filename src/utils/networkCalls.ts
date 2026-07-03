@@ -8,14 +8,14 @@ import { Helper } from "./helper";
 const axiosHttpClient: AxiosInstance = axios.create({});
 
 export async function getExpansions() {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
-  let arrayOfSeries: any[] = [];
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
+  const arrayOfSeries: any[] = [];
   let sets: any[] = [];
   await pokemonSDKVariable.set
     .all({ page: 0 })
     .then((resSets: any[]) => {
       if (resSets) {
-        let setsGroupedBySeries: any = Helper.GroupBy(resSets, "series");
+        const setsGroupedBySeries: any = Helper.GroupBy(resSets, "series");
         sets = resSets;
         Object.keys(setsGroupedBySeries).forEach((seriesName, index) => {
           arrayOfSeries.push({
@@ -35,7 +35,7 @@ export async function getExpansions() {
   return { arrayOfSeries, sets };
 }
 export const getAllSetCards = async (setId?: string) => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let setsObject: any = {};
   await pokemonSDKVariable.card
     .where({
@@ -50,7 +50,7 @@ export const getAllSetCards = async (setId?: string) => {
   return setsObject;
 };
 export const getAllCards = async () => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let setsObject: any = {};
   await pokemonSDKVariable.card
     .all()
@@ -63,7 +63,7 @@ export const getAllCards = async () => {
   return setsObject;
 };
 export const getCardById = async (cardId?: string) => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let returnObject: any = {};
   await pokemonSDKVariable.card
     .find(cardId)
@@ -100,7 +100,7 @@ export const getCardsFromNextServer = async (
 };
 
 export const getAllRarities = async () => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let rarityList = [];
   try {
     rarityList = await pokemonSDKVariable.rarity.all();
@@ -110,7 +110,7 @@ export const getAllRarities = async () => {
   return rarityList;
 };
 export const getAllSuperTypes = async () => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let superTypeList = [];
   try {
     superTypeList = await pokemonSDKVariable.supertype.all();
@@ -121,7 +121,7 @@ export const getAllSuperTypes = async () => {
 };
 
 export const getAllSubtypes = async () => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let subtypeList = [];
   try {
     subtypeList = await pokemonSDKVariable.subtype.all();
@@ -131,7 +131,7 @@ export const getAllSubtypes = async () => {
   return subtypeList;
 };
 export const getAllTypes = async () => {
-  let pokemonSDKVariable = Helper.initializePokemonSDK();
+  const pokemonSDKVariable = Helper.initializePokemonSDK();
   let typeList = [];
   try {
     typeList = await pokemonSDKVariable.type.all();

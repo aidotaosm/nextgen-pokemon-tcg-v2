@@ -49,14 +49,14 @@ export const SetOnLoadComponent = ({
         fieldValues[key] = value;
       }
       const filterNames = Object.keys(fieldValues);
-      let correctedFieldValues: any = {};
+      const correctedFieldValues: any = {};
       filterNames.forEach((fieldName) => {
         if (fieldValues[fieldName]) {
           const fieldValue = fieldValues[fieldName];
           switch (fieldName) {
             case FilterFieldNames.energyType:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((energy) => {
                   if (energyTypes.includes(energy)) {
@@ -67,7 +67,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.weakness:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((weakness) => {
                   if (energyTypes.includes(weakness)) {
@@ -78,7 +78,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.resistance:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((resistance) => {
                   if (energyTypes.includes(resistance)) {
@@ -89,7 +89,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.regulationMarks:
               if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((regulationMark) => {
                   if (regulationMarks.includes(regulationMark)) {
@@ -100,7 +100,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.set:
               if (fieldValue.length && isSearchPage) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((setId) => {
                   if (allSetNames.find((x) => x[0] === setId)) {
@@ -111,7 +111,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.subType:
               if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((subType) => {
                   if (subTypes.includes(subType)) {
@@ -122,7 +122,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.rarity:
               if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((rarity) => {
                   if (rarities.includes(rarity)) {
@@ -133,7 +133,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.hpRange:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((hp) => {
                   if (ValidHPRange.max >= +hp && ValidHPRange.min <= +hp) {
@@ -144,7 +144,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.retreatCost:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((retreatCost) => {
                   if (
@@ -158,7 +158,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.cardType:
               if (fieldValue.length) {
-                let TypedFieldValue = fieldValue.split(",") as string[];
+                const TypedFieldValue = fieldValue.split(",") as string[];
                 correctedFieldValues[fieldName] = [];
                 TypedFieldValue.forEach((cardType) => {
                   if (superTypes.includes(cardType)) {
@@ -169,13 +169,13 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.textSearch:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
+                const TypedFieldValue = fieldValue as string;
                 correctedFieldValues[fieldName] = TypedFieldValue;
               }
               break;
             case FilterFieldNames.sortLevelOne:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
+                const TypedFieldValue = fieldValue as string;
                 correctedFieldValues[fieldName] = "";
                 if (Object.keys(SortOptions).includes(TypedFieldValue)) {
                   correctedFieldValues[fieldName] = TypedFieldValue;
@@ -184,7 +184,7 @@ export const SetOnLoadComponent = ({
               break;
             case FilterFieldNames.sortLevelOneOrder:
               if (fieldValue) {
-                let TypedFieldValue = fieldValue as string;
+                const TypedFieldValue = fieldValue as string;
                 correctedFieldValues[fieldName] = "";
                 if (Object.keys(SortOrderOptions).includes(TypedFieldValue)) {
                   correctedFieldValues[fieldName] = TypedFieldValue;
@@ -200,7 +200,7 @@ export const SetOnLoadComponent = ({
       if (filterInQueryExists) {
         formInstance.setFieldsValue(correctedFieldValues);
       }
-      let tempTotalCount = isSearchPage
+      const tempTotalCount = isSearchPage
         ? paramAllCardsREsponse?.length
         : cardsObject.totalCount;
       if (
@@ -209,7 +209,7 @@ export const SetOnLoadComponent = ({
         !isNaN(parseFloat(pageFromQuery.toString()))
       ) {
         if ((+pageFromQuery + 1) * DEFAULT_PAGE_SIZE > tempTotalCount) {
-          let lastPage = Math.floor(tempTotalCount / DEFAULT_PAGE_SIZE);
+          const lastPage = Math.floor(tempTotalCount / DEFAULT_PAGE_SIZE);
           routerPageIndex = lastPage;
         } else {
           routerPageIndex = +pageFromQuery;

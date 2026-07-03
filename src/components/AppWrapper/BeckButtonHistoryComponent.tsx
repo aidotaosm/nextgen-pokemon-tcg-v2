@@ -10,7 +10,7 @@ export const BeckButtonHistoryComponent = ({
   setPathToRedirect: (param: string) => void;
   listOfPaths: string[];
 }) => {
-  let pathname = usePathname();
+  const pathname = usePathname();
   const queryParams = useSearchParams();
   useEffect(() => {
     if (pathname) {
@@ -23,7 +23,7 @@ export const BeckButtonHistoryComponent = ({
               : ""),
         ]);
       }
-      let splitPath = pathname.split("/")[1];
+      const splitPath = pathname.split("/")[1];
       if (!splitPath) {
         setPathToRedirect("");
       } else if (splitPath === "series") {

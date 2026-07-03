@@ -116,6 +116,16 @@ import { withSerwist } from "@serwist/turbopack";
  */
 const nextConfig = {
   reactStrictMode: true,
+  // Automatically optimize component rendering (memoization) via the React Compiler.
+  reactCompiler: true,
+  // Tree-shake large barrel-file packages for smaller client bundles.
+  experimental: {
+    optimizePackageImports: [
+      "antd",
+      "@fortawesome/free-solid-svg-icons",
+      "@fortawesome/free-regular-svg-icons",
+    ],
+  },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.pokemontcg.io" }],
     minimumCacheTTL: 60 * 60 * 24 * 30 * 12,

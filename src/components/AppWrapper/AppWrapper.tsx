@@ -48,7 +48,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
     updateOfflineMode,
     updateDarkMode,
   } = useContext(AppContext);
-  let pathname = usePathname();
+  const pathname = usePathname();
   const [pathToRedirect, setPathToRedirect] = useState<string>("");
   const [listOfPaths, setListOfPaths] = useState<string[]>([]);
   const [scrollTop, setScrollTop] = useState(0);
@@ -62,7 +62,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
   const githubTooltipId = "githubTooltipId";
 
   useEffect(() => {
-    let bootStrapMasterClass = appState?.bootstrap;
+    const bootStrapMasterClass = appState?.bootstrap;
     let backTooltipInstance: Tooltip,
       offLineTooltipInstance: Tooltip,
       darkModeTooltipInstance: Tooltip,
@@ -120,7 +120,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
       if (pathname.includes("/series") || pathname === "/") {
         setListOfPaths((l) => [...l, pathname || ""]);
       }
-      let splitPath = pathname.split("/")[1];
+      const splitPath = pathname.split("/")[1];
       if (!splitPath) {
         setPathToRedirect("");
       } else if (splitPath === "series") {
@@ -151,26 +151,26 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    let localAppState: LocalAppInterface =
+    const localAppState: LocalAppInterface =
       Helper.getLocalStorageItem("appState");
-    let darkModeValue =
+    const darkModeValue =
       localAppState?.hasOwnProperty("darkMode") &&
       typeof localAppState.darkMode === "boolean"
         ? localAppState.darkMode
         : true;
-    let gridViewValue =
+    const gridViewValue =
       localAppState?.hasOwnProperty("gridView") &&
       typeof localAppState.gridView === "boolean"
         ? localAppState.gridView
         : false;
-    let sidebarCollapsedValue =
+    const sidebarCollapsedValue =
       localAppState?.hasOwnProperty("sidebarCollapsed") &&
       typeof localAppState.sidebarCollapsed === "boolean"
         ? localAppState.sidebarCollapsed
         : window.innerWidth > 576
         ? false
         : true;
-    let offLineModeValue =
+    const offLineModeValue =
       localAppState?.hasOwnProperty("offLineMode") &&
       typeof localAppState.offLineMode === "boolean"
         ? localAppState.offLineMode
@@ -217,7 +217,7 @@ export const AppWrapper: FunctionComponent<BasicProps> = ({ children }) => {
     };
   }, []);
   const hideAllTollTips = () => {
-    let bootStrapMasterClass = appState?.bootstrap;
+    const bootStrapMasterClass = appState?.bootstrap;
     if (bootStrapMasterClass) {
       const darkModeButtonTooltipInstance: Tooltip =
         bootStrapMasterClass.Tooltip.getInstance("#" + darkModeButtonTooltipId);

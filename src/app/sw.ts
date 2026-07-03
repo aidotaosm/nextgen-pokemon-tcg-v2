@@ -145,15 +145,18 @@ const runtimeCaching: RuntimeCaching[] = [
     }),
   },
   {
-    matcher: /^.*\?_rsc=\w{5}$/i,
+    // Next.js 16 generates `_rsc` as a base64url-encoded 96-bit SHA-256 digest
+    // (16 chars from [A-Za-z0-9-_]), not the old 5-char value. Match the param
+    // regardless of its value/length so RSC prefetches land in this cache.
+    matcher: /[?&]_rsc\b/i,
     handler: new StaleWhileRevalidate({
       cacheName: "rsc",
       plugins: [
         {
-          // Strip the `?_rsc=xxxxx` query so navigations to the same route
+          // Strip the `?_rsc=...` query so navigations to the same route
           // resolve to a single cache entry (used by the set/search preload).
           cacheKeyWillBeUsed: async ({ request }) => {
-            return request.url.replace(/\?_rsc=\w{5}/, "");
+            return request.url.replace(/[?&]_rsc=[^&]*/i, "");
           },
         },
         new ExpirationPlugin({

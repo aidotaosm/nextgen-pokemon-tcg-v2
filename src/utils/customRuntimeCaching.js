@@ -106,7 +106,7 @@ module.exports = [
     },
   },
   {
-    urlPattern: /^.*\?_rsc=\w{5}$/i,
+    urlPattern: /[?&]_rsc\b/i,
     handler: "StaleWhileRevalidate",
     options: {
       cacheName: "rsc",
@@ -139,7 +139,7 @@ module.exports = [
           //   return response;
           // },
           cacheKeyWillBeUsed: async ({ request, response }) => {
-            const modifiedUrl = request.url.replace(/\?_rsc=\w{5}/, "");
+            const modifiedUrl = request.url.replace(/[?&]_rsc=[^&]*/i, "");
             //console.log(modifiedUrl);
             return modifiedUrl;
           },

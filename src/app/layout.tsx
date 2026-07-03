@@ -12,6 +12,7 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 import { baseMetaData } from "@/data/base-metadata";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SerwistProvider } from "@serwist/turbopack/react";
 
 config.autoAddCss = false;
 
@@ -26,9 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={""}>
-        <AppProvider>
-          <AppWrapper>{children}</AppWrapper>
-        </AppProvider>
+        <SerwistProvider
+          swUrl="/serwist/sw.js"
+          reloadOnOnline={true}
+          disable={process.env.NODE_ENV === "development"}
+        >
+          <AppProvider>
+            <AppWrapper>{children}</AppWrapper>
+          </AppProvider>
+        </SerwistProvider>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -9,31 +9,37 @@
     "start": "next start -p 3001"
   },
   "dependencies": {
-    "@ducanh2912/next-pwa": "^10.2.4",
-    "@fortawesome/fontawesome-svg-core": "^6.5.1",
-    "@fortawesome/free-regular-svg-icons": "^6.5.1",
-    "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@vercel/analytics": "^1.1.2",
-    "@vercel/speed-insights": "^1.0.8",
-    "antd": "^5.14.0",
-    "axios": "^1.6.7",
-    "bootstrap": "^5.3.2",
-    "env-cmd": "^10.1.0",
-    "next": "^14.2.3",
-    "next-nprogress-bar": "^2.1.2",
+    "@fortawesome/fontawesome-svg-core": "^7.3.0",
+    "@fortawesome/free-regular-svg-icons": "^7.3.0",
+    "@fortawesome/free-solid-svg-icons": "^7.3.0",
+    "@fortawesome/react-fontawesome": "^3.3.1",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "antd": "^6.5.0",
+    "axios": "^1.18.1",
+    "bootstrap": "^5.3.8",
+    "env-cmd": "^11.0.0",
+    "next": "^16.2.10",
+    "next-nprogress-bar": "^2.4.7",
     "pokemontcgsdk": "^2.0.0",
-    "pure-react-carousel": "^1.30.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "sharp": "^0.33.2"
+    "pure-react-carousel": "^1.35.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@types/bootstrap": "^5.2.10",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5",
-    "webpack": "^5.89.0"
+    "@serwist/turbopack": "9.5.11",
+    "@types/bootstrap": "^5.2.11",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "esbuild": "^0.28.1",
+    "serwist": "9.5.11",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "pure-react-carousel@1.35.0": "patches/pure-react-carousel@1.35.0.patch"
+    }
   }
 }

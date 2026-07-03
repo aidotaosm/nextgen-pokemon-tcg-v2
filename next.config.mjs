@@ -1,4 +1,7 @@
-const customRuntimeCaching = require("./src/utils/customRuntimeCaching");
+import { withSerwist } from "@serwist/turbopack";
+
+// ===== OLD next-pwa config (pre Next.js 16) — kept for reference only =====
+// const customRuntimeCaching = require("./src/utils/customRuntimeCaching");
 // const { PHASE_PRODUCTION_BUILD } = require("next/constants");
 // module.exports = (phase, { defaultConfig }) => {
 //   //console.log(defaultConfig, "defaultConfig");
@@ -69,43 +72,50 @@ const customRuntimeCaching = require("./src/utils/customRuntimeCaching");
 //   return require("@ducanh2912/next-pwa").default(config)();
 // };
 
-const withPWA = require("@ducanh2912/next-pwa").default({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
+// const withPWA = require("@ducanh2912/next-pwa").default({
+//   dest: "public",
+//   disable: process.env.NODE_ENV === "development",
+//
+//   register: true,
+//   skipWaiting: true,
+//   extendDefaultRuntimeCaching: true,
+//   workboxOptions: {
+//     maximumFileSizeToCacheInBytes: 50000000,
+//     runtimeCaching: [...customRuntimeCaching],
+//     //ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^_rsc$/, /^opened-series$/],
+//     // exclude: [/media\/.*$/],
+//   },
+//   fallbacks: {
+//     image: "/images/Cardback.webp",
+//   },
+//
+//   reloadOnOnline: true,
+//   publicExcludes: [
+//     "!noprecache/**/*",
+//     "!sitemap.xml",
+//     "!robots.txt",
+//     "!images/pokemon_tcg_base_image.webp",
+//     "!images/expansions_image.jpg",
+//     "!antd.min.css",
+//     "!images/Cardback.webp", // if we do not add this, this gets cached twice because of fallbacks: {image: "/images/Cardback.webp"} and breaks the SW
+//     "!images/screenshot1.png",
+//     "!images/screenshot2.png",
+//   ],
+//   //dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
+//   //cacheStartUrl: true,
+// });
+// ===== END OLD next-pwa config =====
 
-  register: true,
-  skipWaiting: true,
-  extendDefaultRuntimeCaching: true,
-  workboxOptions: {
-    maximumFileSizeToCacheInBytes: 50000000,
-    runtimeCaching: [...customRuntimeCaching],
-    //ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^_rsc$/, /^opened-series$/],
-    // exclude: [/media\/.*$/],
-  },
-  fallbacks: {
-    image: "/images/Cardback.webp",
-  },
-
-  reloadOnOnline: true,
-  publicExcludes: [
-    "!noprecache/**/*",
-    "!sitemap.xml",
-    "!robots.txt",
-    "!images/pokemon_tcg_base_image.webp",
-    "!images/expansions_image.jpg",
-    "!antd.min.css",
-    "!images/Cardback.webp", // if we do not add this, this gets cached twice because of fallbacks: {image: "/images/Cardback.webp"} and breaks the SW
-    "!images/screenshot1.png",
-    "!images/screenshot2.png",
-  ],
-  //dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
-  //cacheStartUrl: true,
-  //   publicExcludes: ['!manifest.webmanifest', '!images/favicon-16x16.png', '!images/favicon-32x32.png', '!images/safari-pinned-tab.svg', '!images/android-chrome-192x192.png', '!images/android-chrome-512x512.png', '!images/apple-touch-icon.png', '!favicon.ico']
-});
-
-module.exports = withPWA({
+/**
+ * New PWA setup uses Serwist (@serwist/turbopack), which supports Next.js 16 + Turbopack.
+ * - Service worker source:  src/app/sw.ts (runtime caching ported from customRuntimeCaching.js)
+ * - Route handler:          src/app/serwist/[path]/route.ts (compiles + serves /serwist/sw.js)
+ * - Registration + offline reload: <SerwistProvider> in src/app/layout.tsx
+ *
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.pokemontcg.io" }],
     minimumCacheTTL: 60 * 60 * 24 * 30 * 12,
@@ -116,9 +126,6 @@ module.exports = withPWA({
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== "local" &&
       process.env.NODE_ENV !== "development",
   },
-  //  api: {
-  //     responseLimit: false,
-  // },
-  // transpilePackages: ['antd'],
-  // target: 'serverless',
-});
+};
+
+export default withSerwist(nextConfig);

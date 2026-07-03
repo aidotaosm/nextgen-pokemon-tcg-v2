@@ -6,7 +6,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
-export let revalidate = 60 * 60 * 24;
+export const revalidate = 86400; // 60 * 60 * 24
 export const dynamicParams = true; // this is fallback true
 export const generateStaticParams = async () => {
   return [];
@@ -20,7 +20,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // fetch data
-  const cardObject = await getCardOnServer(params.cardId);
+  const { cardId } = await params;
+  const cardObject = await getCardOnServer(cardId);
   if (!cardObject.id) {
     return {};
   }
@@ -47,7 +48,8 @@ export async function generateMetadata(
   };
 }
 const CardDetails = async ({ params }: Props<{ cardId: string }>) => {
-  const cardObject = await getCardOnServer(params.cardId);
+  const { cardId } = await params;
+  const cardObject = await getCardOnServer(cardId);
   if (!cardObject?.id) {
     notFound();
   }

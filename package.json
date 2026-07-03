@@ -2,6 +2,11 @@
   "name": "nextgen-pokemon-tcg-v2",
   "version": "2.1",
   "private": false,
+  "packageManager": "pnpm@9.7.0",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "env-cmd -f .env.local next dev -p 3001",
     "build": "env-cmd -f .env.production next build",
@@ -40,6 +45,14 @@
   "pnpm": {
     "patchedDependencies": {
       "pure-react-carousel@1.35.0": "patches/pure-react-carousel@1.35.0.patch"
+    },
+    "overrides": {
+      "pokemontcgsdk>axios": "^0.32.0",
+      "qs": "^6.15.2",
+      "follow-redirects": "^1.16.0",
+      "@babel/runtime": "^7.26.10",
+      "nanoid": "^3.3.8",
+      "postcss": "^8.5.10"
     }
   }
 }

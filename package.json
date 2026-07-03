@@ -28,10 +28,13 @@
     "sharp": "^0.33.2"
   },
   "devDependencies": {
+    "@serwist/turbopack": "9.5.11",
     "@types/bootstrap": "^5.2.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.1",
+    "serwist": "9.5.11",
     "typescript": "^5"
   },
   "pnpm": {

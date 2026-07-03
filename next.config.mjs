@@ -1,3 +1,6 @@
+import { withSerwist } from "@serwist/turbopack";
+
+// ===== OLD next-pwa config (pre Next.js 16) — kept for reference only =====
 // const customRuntimeCaching = require("./src/utils/customRuntimeCaching");
 // const { PHASE_PRODUCTION_BUILD } = require("next/constants");
 // module.exports = (phase, { defaultConfig }) => {
@@ -69,7 +72,6 @@
 //   return require("@ducanh2912/next-pwa").default(config)();
 // };
 
-// ===== OLD PWA CONFIG — kept for reference. Re-enable after PWA is re-implemented post-migration to Next.js 16. =====
 // const withPWA = require("@ducanh2912/next-pwa").default({
 //   dest: "public",
 //   disable: process.env.NODE_ENV === "development",
@@ -101,34 +103,16 @@
 //   ],
 //   //dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
 //   //cacheStartUrl: true,
-//   //   publicExcludes: ['!manifest.webmanifest', '!images/favicon-16x16.png', '!images/favicon-32x32.png', '!images/safari-pinned-tab.svg', '!images/android-chrome-192x192.png', '!images/android-chrome-512x512.png', '!images/apple-touch-icon.png', '!favicon.ico']
 // });
-//
-// module.exports = withPWA({
-//   reactStrictMode: true,
-//   swcMinify: true,
-//   images: {
-//     remotePatterns: [{ protocol: "https", hostname: "images.pokemontcg.io" }],
-//     minimumCacheTTL: 60 * 60 * 24 * 30 * 12,
-//   },
-//   staticPageGenerationTimeout: 60,
-//   compiler: {
-//     removeConsole:
-//       process.env.NEXT_PUBLIC_APP_ENVIRONMENT !== "local" &&
-//       process.env.NODE_ENV !== "development",
-//   },
-//   //  api: {
-//   //     responseLimit: false,
-//   // },
-//   // transpilePackages: ['antd'],
-//   // target: 'serverless',
-// });
-// ===== END OLD PWA CONFIG =====
+// ===== END OLD next-pwa config =====
 
 /**
+ * New PWA setup uses Serwist (@serwist/turbopack), which supports Next.js 16 + Turbopack.
+ * - Service worker source:  src/app/sw.ts (runtime caching ported from customRuntimeCaching.js)
+ * - Route handler:          src/app/serwist/[path]/route.ts (compiles + serves /serwist/sw.js)
+ * - Registration + offline reload: <SerwistProvider> in src/app/layout.tsx
+ *
  * @type {import('next').NextConfig}
- * New config for Next.js 16. The PWA plugin (@ducanh2912/next-pwa) was removed for the
- * migration and will be re-added later. The old config is commented above for reference.
  */
 const nextConfig = {
   reactStrictMode: true,
@@ -144,4 +128,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default withSerwist(nextConfig);

@@ -22,7 +22,7 @@ export const CopyToClipboardComponent: FunctionComponent<
   const appContextValues = useContext(AppContext);
   useEffect(() => {
     let popoverInstance: Popover;
-    let bootStrapMasterClass = appContextValues?.appState?.bootstrap;
+    const bootStrapMasterClass = appContextValues?.appState?.bootstrap;
     const popoverTrigger = document.getElementById(popOverId) as any;
     if (bootStrapMasterClass && popoverTrigger) {
       popoverInstance = new bootStrapMasterClass.Popover(popoverTrigger);

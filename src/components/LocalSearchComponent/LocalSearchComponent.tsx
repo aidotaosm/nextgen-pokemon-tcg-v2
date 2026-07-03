@@ -32,15 +32,15 @@ export const LocalSearchComponent: FunctionComponent<
       setAntComponentLoaded(true);
       let timeout: any = null;
       const animate = (randomIndex: number) => {
-        let ph = random_pokemon_names[randomIndex];
-        let searchBar = document.getElementById("search") as HTMLInputElement;
+        const ph = random_pokemon_names[randomIndex];
+        const searchBar = document.getElementById("search") as HTMLInputElement;
         // placeholder loop counter
         let phCount = 0;
 
         // function to return random number between
         // with min/max range
         const randDelay = (min: number, max: number) => {
-          let delayValue = Math.floor(Math.random() * (max - min + 1) + min);
+          const delayValue = Math.floor(Math.random() * (max - min + 1) + min);
           return delayValue;
         };
 
@@ -48,7 +48,7 @@ export const LocalSearchComponent: FunctionComponent<
         // 'typing' effect
         const printLetter = (string: string, el: HTMLInputElement) => {
           // split string into character seperated array
-          let arr = string.split(""),
+          const arr = string.split(""),
             input = el,
             // store full placeholder
             origString = string,
@@ -80,13 +80,13 @@ export const LocalSearchComponent: FunctionComponent<
         };
         placeholder();
       };
-      let interval = setInterval(() => {
+      const interval = setInterval(() => {
         clearTimeout(timeout);
-        let randomIndex = Math.floor(Math.random() * random_pokemon_names.length);
+        const randomIndex = Math.floor(Math.random() * random_pokemon_names.length);
         animate(randomIndex);
       }, 2000);
       if (setCards) {
-        let listOfCardsWithUniqueNames = Array.from(new Set(setCards.map(card => card.name)));
+        const listOfCardsWithUniqueNames = Array.from(new Set(setCards.map(card => card.name)));
         listOfCardsWithUniqueNames.sort(
           (firstColumn, secondColumn) => firstColumn.localeCompare(secondColumn)
         );

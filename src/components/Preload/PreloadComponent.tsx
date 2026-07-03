@@ -71,7 +71,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     let tooltipTriggerInstance: Tooltip,
       cacheTooltipInstance: Tooltip,
       settingsTooltipInstance: Tooltip;
-    let bootStrapMasterClass = appState?.bootstrap;
+    const bootStrapMasterClass = appState?.bootstrap;
     const tooltipTrigger = document.getElementById(
       downloadLatestAllCardsJsonTooltipId
     ) as any;
@@ -140,7 +140,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
     urlToPrefetch: string,
     callTime: number
   ) => {
-    let retrunVal = await new Promise((resolve, reject) => {
+    const retrunVal = await new Promise((resolve, reject) => {
       setTimeout(() => {
         router.prefetch(urlToPrefetch);
         resolve(urlToPrefetch + " has been prefetched");
@@ -158,8 +158,8 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
 
     const batchAndExecutePrefetchThenClearUrls = async (setIndex: number) => {
       setPrefetchingSets(setsWithCallUrls);
-      let calls = setsWithCallUrls.map(async (set) => {
-        let randomNumber = Helper.randDelay(500, 1500);
+      const calls = setsWithCallUrls.map(async (set) => {
+        const randomNumber = Helper.randDelay(500, 1500);
         await promiseWrappedPrefetch(set.callUrl, randomNumber);
         flushSync(() => {
           setShouldCancel((x) => {
@@ -218,7 +218,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
               });
               // executing prefetch since isLastSetOfSeries
               if (isLastSetOfSeries) {
-                let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
+                const res = await batchAndExecutePrefetchThenClearUrls(setIndex);
                 if (res?.message === "manual abort") {
                   setPrefetchingSets([]);
                   lastIndex = seriesIndex;
@@ -240,7 +240,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
                     ? SpecialSetNames.poptwo
                     : setsBySeries[seriesIndex].sets[setIndex].id),
               });
-              let res = await batchAndExecutePrefetchThenClearUrls(setIndex);
+              const res = await batchAndExecutePrefetchThenClearUrls(setIndex);
               if (res?.message === "manual abort") {
                 setPrefetchingSets([]);
                 lastIndex = seriesIndex;
@@ -292,7 +292,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
         cardsParentObject.sort((firstColumn, secondColumn) =>
           firstColumn.name.localeCompare(secondColumn.name)
         );
-        let listOfCardsWithUniqueNames = Array.from(
+        const listOfCardsWithUniqueNames = Array.from(
           new Set(cardsParentObject.map((card: any) => card.name))
         );
         Helper.saveTemplateAsFile(
@@ -311,7 +311,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
             : -1
         );
         cardsParentObject.reverse();
-        let listOfUniqueSets = Array.from(
+        const listOfUniqueSets = Array.from(
           new Map(cardsParentObject.map((item) => [item.set.id, item.set.name]))
         );
         Helper.saveTemplateAsFile("AllSetNames.json", listOfUniqueSets);
@@ -349,7 +349,7 @@ export const PreloadComponent: FunctionComponent<PreloadComponentProps> = ({
   const handleToastClick = async () => {
     if (serviceWorkerIsReady) {
       const toastLiveExample = document.getElementById(prefetchToastId);
-      let bootStrapMasterClass = appState?.bootstrap;
+      const bootStrapMasterClass = appState?.bootstrap;
       if (toastLiveExample && bootStrapMasterClass) {
         const settingsTooltipInstance: Tooltip =
           bootStrapMasterClass.Tooltip.getInstance("#" + settingsTooltipId);

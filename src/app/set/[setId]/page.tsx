@@ -11,7 +11,7 @@ export const revalidate = 86400; // 60 * 60 * 24
 export const dynamicParams = true;
 export const generateStaticParams = async () => {
   const { arrayOfSeries, sets } = await getExpansions();
-  let returnPaths: { setId: string }[] = [];
+  const returnPaths: { setId: string }[] = [];
   arrayOfSeries.forEach((series) => {
     series.sets.forEach((set: any) => {
       if (set.id === SpecialSetNames.pop2) {
@@ -29,7 +29,7 @@ export const generateStaticParams = async () => {
 
 const getSetOnServer = cache(async (setId: string) => {
   // this is done because pop2 is blocked by ad blocker
-  let correctedSetId =
+  const correctedSetId =
     setId == SpecialSetNames.poptwo ? SpecialSetNames.pop2 : setId;
   const cardsObject = await getAllSetCards(correctedSetId);
   // const setCards = dynamicallyImportedAllCards.filter((x: any) => {

@@ -22,7 +22,7 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
   totalNumberOfSets,
   arrayOfSeries,
 }: any) => {
-  let router = useRouter();
+  const router = useRouter();
   const { updateGlobalSearchTerm } = useContext(AppContext);
   const [setsBySeries, setSetsBySeries] = useState<any[]>(arrayOfSeries);
   const [searchValue, setSearchValue] = useState("");
@@ -45,7 +45,7 @@ export const ExpansionsComponent: FunctionComponent<SeriesArrayProps> = ({
       }
     });
     if (allowScroll) {
-      let newAccordionToOpen = document.getElementById(seriesId);
+      const newAccordionToOpen = document.getElementById(seriesId);
       setTimeout(() => {
         newAccordionToOpen?.scrollIntoView({
           behavior: "smooth",

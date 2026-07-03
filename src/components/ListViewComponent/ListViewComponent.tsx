@@ -29,7 +29,7 @@ export const ListViewComponent: FunctionComponent<SetCardsProps> = ({
   };
   console.log("ListViewComponent rendered");
   const handleModalClose = useCallback((e: Event) => {
-    let arrayOFCarouselItems = [
+    const arrayOFCarouselItems = [
       ...(document.getElementsByClassName("carousel-item") as any),
     ];
     arrayOFCarouselItems.forEach((carouselItem) => {

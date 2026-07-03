@@ -6,8 +6,8 @@ export const triggerAllCardsPreCache = async (
   callbackSuccess?: Function,
   callbackFailed?: Function
 ) => {
-  let openedCache = await caches.open("cross-origin");
-  let cacheKEys = await openedCache.keys();
+  const openedCache = await caches.open("cross-origin");
+  const cacheKEys = await openedCache.keys();
   const cachedResponse = cacheKEys.find((x) => {
     if (x.url === IPFS_ALLCARDS_JSON_URL) {
       return x;
@@ -45,12 +45,12 @@ export const checkIfUrlsAreCached = async (
   type: "stringArray" | "objectArray",
   callbackSuccess?: Function
 ) => {
-  let openedCache = await caches.open(cacheName);
-  let cacheKEys = await openedCache.keys();
-  let returnVals: { url: string; isCached: boolean }[] = [];
+  const openedCache = await caches.open(cacheName);
+  const cacheKEys = await openedCache.keys();
+  const returnVals: { url: string; isCached: boolean }[] = [];
   if (cacheKEys.length) {
     if (type === "stringArray") {
-      let typedUrls = urls as string[];
+      const typedUrls = urls as string[];
       typedUrls.forEach((x) => {
         const cachedResponse = cacheKEys.find((y) => {
           if (y.url === x) {
@@ -67,7 +67,7 @@ export const checkIfUrlsAreCached = async (
         }
       });
     } else {
-      let typedUrls = urls as {
+      const typedUrls = urls as {
         url: string;
         seriesIndex: number;
         setIndex: number;
